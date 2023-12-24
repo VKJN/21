@@ -1,5 +1,5 @@
-﻿  TwentyOne.cpp
-d:\projects\21\twentyone\twentyone.cpp(30): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
-d:\projects\21\twentyone\twentyone.cpp(34): warning C4244: инициализация: преобразование "unsigned int" в "float", возможна потеря данных
-d:\projects\21\twentyone\twentyone.cpp(35): warning C4244: инициализация: преобразование "unsigned int" в "float", возможна потеря данных
+﻿  GameMenu.cpp
+d:\projects\21\twentyone\gamemenu.cpp(29): warning C4244: инициализация: преобразование "float" в "int", возможна потеря данных
+d:\projects\21\twentyone\gamemenu.cpp(33): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+d:\projects\21\twentyone\gamemenu.cpp(50): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
   TwentyOne.vcxproj -> D:\Projects\21\TwentyOne\x64\Debug\TwentyOne.exe

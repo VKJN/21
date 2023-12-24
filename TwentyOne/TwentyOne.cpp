@@ -1,4 +1,5 @@
 ﻿#include "Header.h"
+#include "GameMenu.h"
 #include "Game.h"
 
 //class TrumpCards {
@@ -27,6 +28,16 @@
 
 const float width = sf::VideoMode::getDesktopMode().width;
 const float height = sf::VideoMode::getDesktopMode().height;
+const sf::Color menuTextColor(240, 150, 0, 255);
+const int tricknessSize = 3;
+
+void initText(sf::Text& text, float posX, float posY, std::string str, int sizeFont, sf::Color menuTextColor) {
+    text.setCharacterSize(sizeFont);
+    text.setPosition(posX, posY);
+    text.setString(str);
+    text.setFillColor(menuTextColor);
+    text.setOutlineThickness(tricknessSize);
+}
 
 int main()
 {
@@ -34,28 +45,45 @@ int main()
 
     sf::RenderWindow window(sf::VideoMode::getDesktopMode(), L"Twenty One", sf::Style::Fullscreen);
 
-    sf::RectangleShape background(sf::Vector2f(150, 225));
+    sf::RectangleShape background(sf::Vector2f(width, height));
 
-    sf::Texture texture;
-    if (!texture.loadFromFile("image/1.jpg"))
-    {
+    sf::Texture texture_window;
+    if (!texture_window.loadFromFile("image/background.jpg")) {
         // error...
     }
-    background.setPosition(0, 0);
-    background.setTexture(&texture);
+    background.setTexture(&texture_window);
 
-    
-    while (window.isOpen())
-    {
+    sf::Font menuFont;
+    if (!menuFont.loadFromFile("fonts/ariali.ttf")) {
+        // error...
+    }
+
+    sf::Text titul;
+    titul.setFont(menuFont);
+    initText(titul, 600, 50, "Twenty One", 125, menuTextColor);
+
+    std::string nameMenu[4]{ "Play", "Options", "About play", "Exit" };
+
+    GameMenu game(950, 350, 65, 120, nameMenu);
+    game.setColorTextMenu(menuTextColor, sf::Color::Red);
+    game.AlignMenu();
+
+    while (window.isOpen()) {
         sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
                 window.close();
+            }
+
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+                window.close();
+            }
         }
 
-        window.clear(sf::Color::White);
+        window.clear();
         window.draw(background);
+        window.draw(titul);
+        game.draw(window);
         window.display();
     }
 
