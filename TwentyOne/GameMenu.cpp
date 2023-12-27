@@ -1,13 +1,14 @@
 #include "Header.h"
+#include "Config.h"
 #include "GameMenu.h"
 
-void GameMenu::setInitText(sf::Text& text, std::string& str, float xpos, float ypos) {
+void GameMenu::setInitText(sf::Text& text, std::string& str, float xpos, float ypos, sf::Color color, int fontSize) {
 	text.setFont(font);
-	text.setFillColor(menuTextColor);
+	text.setFillColor(color);
 	text.setString(str);
-	text.setCharacterSize(sizeFont);
+	text.setCharacterSize(fontSize);
 	text.setPosition(xpos, ypos);
-	text.setOutlineThickness(3); //const int tricknessSize = 3
+	text.setOutlineThickness(tricknessSize);
 }
 
 void GameMenu::AlignMenu() {
@@ -19,20 +20,109 @@ void GameMenu::AlignMenu() {
 	}
 }
 
-GameMenu::GameMenu(float menux, float menuy, int sizeFont, int step, std::string name[])
-	:menuX(menux), menuY(menuy), menuStep(step), sizeFont(sizeFont), mainMenu(name->size())
+GameMenu::GameMenu(float menux, float menuy, int sizeFont, int step, std::vector<std::string>& name)
+	:menuX(menux), menuY(menuy), menuStep(step), sizeFont(sizeFont), mainMenu(name.size())
 {
 	if (!font.loadFromFile("fonts/ariali.ttf")) {
 		// error...
 	}
 
 	for (int i = 0, posY = menuY; i < mainMenu.size(); i++, posY += menuStep) {  // posY - для расстояния между текстом
-		setInitText(mainMenu[i], name[i], menuX, posY);
+		setInitText(mainMenu[i], name[i], menuX, posY, menuColor, sizeFont);
 	}
 }
 
 void GameMenu::draw(sf::RenderWindow& window) {
 	for (auto i : mainMenu) {
 		window.draw(i);
+	}
+}
+
+void GameMenu::setColorTextMenu(sf::Color color) {
+	menuColor = color;
+	for (auto i : mainMenu) {
+		i.setFillColor(menuColor);
+	}
+}
+
+int GameMenu::GamePlayMenu(sf::RenderWindow& window, sf::RectangleShape& background, sf::Text& titul, sf::Event event) {
+	int resultMenu = 0;
+	while (resultMenu == 0) {
+		while (window.pollEvent(event)) {
+			if (event.type == sf::Event::Closed) {
+				window.close();
+			}
+
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+				window.close();
+			}
+			sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+			
+			// Проверка, если координаты мыши попадают по кнопке, она меняет цвет
+			for (int i = 0; i < mainMenu.size(); i++) {
+				if (mainMenu[i].getGlobalBounds().contains(float(mousePosition.x), float(mousePosition.y))) {
+					mainMenu[i].setFillColor(menuColor);
+				}
+				else {
+					mainMenu[i].setFillColor(sf::Color::White);
+				}
+			}
+
+			if (event.type == sf::Event::MouseButtonPressed) {
+				if (event.mouseButton.button == sf::Mouse::Left) {
+					sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+
+					// Проверка, на какую кнопку в меню нажали
+					for (int i = 0; i < mainMenu.size(); i++) {
+						if (mainMenu[i].getGlobalBounds().contains(float(mousePosition.x), float(mousePosition.y))) {
+							switch (i) {
+							case 0:
+								resultMenu = 1;
+								break;
+							case 1:
+								OpenRules(window, background, event);
+								break;
+							case 2:
+								window.close();
+								std::exit(0);
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
+		window.clear();
+		window.draw(background);
+		window.draw(titul);
+		draw(window); 
+		window.display();
+	}
+	return resultMenu;	
+}
+
+void GameMenu::OpenRules(sf::RenderWindow& window, sf::RectangleShape& background, sf::Event event) { 
+	std::ifstream rulesFile(rulesPath); // Функция для вывода правил из файла
+	std::string lineText;
+	sf::Text textFromFile;
+
+	bool returnMenu = false;
+	while (!returnMenu) {
+		if (rulesFile.is_open()) {
+			while (std::getline(rulesFile, lineText)) {
+				setInitText(textFromFile, lineText, 100, 900, sf::Color::White, 30);  // Позицию текста сделать
+			}
+		}
+		rulesFile.close();
+
+		while (window.pollEvent(event)) {
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+				returnMenu = true;
+			}
+		}
+		window.clear();
+		window.draw(background);
+		window.draw(textFromFile);
+		window.display();
 	}
 }

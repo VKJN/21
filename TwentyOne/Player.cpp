@@ -11,7 +11,8 @@ YourPlayer::YourPlayer(const Card& FirstCard, const Card& SecondCard) {
     CardSum += FirstCard.GetNumber() + SecondCard.GetNumber();
 }
 
-void YourPlayer::TakeCard(const Card& NewCard) {
+// Метод для добавления в руки карты, пока сумма номеров карт не выше выйгрышного числа
+void YourPlayer::TakeCard(const Card& NewCard, int& winningNumber) {
     if (CardSum < winningNumber) {
         Array_of_cards.push_back(NewCard);
 
@@ -22,28 +23,32 @@ void YourPlayer::TakeCard(const Card& NewCard) {
     }
 }
 
-void YourPlayer::Pass() {
-    MOVE = !MOVE;
+
+// Метод для смены активного игрока и повышения счетчика пассов (при пасе)
+void YourPlayer::Pass(bool& WHOMOVE, int& CounterPass) {
+    WHOMOVE = !WHOMOVE;
     CounterPass++;
 }
 
-void YourPlayer::Move(CardDeck& Deck) {
+
+// Ход игрока, так как в нем вызываются Pass и TakeCard, нужно передать для них соответствующие параметры
+void YourPlayer::Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& MaxCards, int& winningNumber) {
     std::cout << "Your move: " << std::endl;
     int key;
     key = _getch();
     switch (key) {
     case Napravlenie::Two:
         try {
-            TakeCard(Deck.RemoveCard(random(1, Deck.GetCardCounter())));
+            TakeCard(Deck.RemoveCard(random(1, Deck.GetCardCounter()), MaxCards), winningNumber);
             CounterPass = 0;
-            MOVE = !MOVE;
+            WHOMOVE = !WHOMOVE;
         }
         catch (const char* error_message) {
             std::cout << error_message << std::endl;
         }
         break;
     case Napravlenie::Three:
-        Pass();
+        Pass(WHOMOVE, CounterPass);
         break;
     }
 }
@@ -91,24 +96,24 @@ EnemyPlayer::EnemyPlayer(const Card& FirstCard, const Card& SecondCard) {
     CardSum += FirstCard.GetNumber() + SecondCard.GetNumber();
 }
 
-void EnemyPlayer::TakeCard(const Card& NewCard) {
+void EnemyPlayer::TakeCard(const Card& NewCard, int& winningNumber) {
     Array_of_cards.push_back(NewCard);
     CardSum += NewCard.GetNumber();
 }
 
-void EnemyPlayer::Pass() {
-    MOVE = !MOVE;
+void EnemyPlayer::Pass(bool& WHOMOVE, int& CounterPass) {
+    WHOMOVE = !WHOMOVE;
     CounterPass++;
 }
 
-void EnemyPlayer::Move(CardDeck& Deck) {
+void EnemyPlayer::Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& MaxCards, int& winningNumber) {
     if (CardSum < 17) {
-        TakeCard(Deck.RemoveCard(random(1, Deck.GetCardCounter())));
+        TakeCard(Deck.RemoveCard(random(1, Deck.GetCardCounter()), MaxCards), winningNumber);
         CounterPass = 0;
-        MOVE = !MOVE;
+        WHOMOVE = !WHOMOVE;
     }
     else {
-        Pass();
+        Pass(WHOMOVE, CounterPass);
     }
 }
 

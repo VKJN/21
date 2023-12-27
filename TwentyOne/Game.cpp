@@ -1,10 +1,14 @@
 #include "Header.h"
 #include "Game.h"
 
-Game::Game(YourPlayer& player, EnemyPlayer& enemy, CardDeck& deck) {
+Game::Game(YourPlayer& player, EnemyPlayer& enemy, CardDeck& deck, int MaxCards) {
     this->enemy = enemy;
     this->player = player;
     this->deck = deck;
+
+    this->CounterPass = 0;
+    this->MaxCards = MaxCards;
+    this->winningNumber = 21;
 }
 
 void Game::Play() {
@@ -24,7 +28,7 @@ void Game::Play() {
 
 void Game::Round() {
     std::cout << "New round" << std::endl;
-    MOVE = random(0, 1);
+    WHOMOVE = random(0, 1);
     do {
         enemy.showCards();
         std::cout << std::endl << enemy.GetCardSum() << "/" << winningNumber << "\n\n";
@@ -34,11 +38,11 @@ void Game::Round() {
 
         std::cout << "CounterPass: " << CounterPass << "\n\n\n";
 
-        if (MOVE) {
-            player.Move(deck);
+        if (WHOMOVE) {
+            player.Move(deck, WHOMOVE, CounterPass, MaxCards, winningNumber);
         }
         else {
-            enemy.Move(deck);
+            enemy.Move(deck, WHOMOVE, CounterPass, MaxCards, winningNumber);
         }
     } while (CounterPass < 2);
 }
@@ -103,11 +107,11 @@ void Game::RestartRound() {
     enemy.SetCardSum(0);
     deck.SetCardCounter(0);
 
-    MAX_CARDS = 11;
+    MaxCards = 11;
 
-    AddInDeck(deck);
+    AddInDeck(deck, MaxCards);
     for (int i = 0; i < 2; i++) {
-        player.TakeCard(deck.RemoveCard(random(1, deck.GetCardCounter())));
-        enemy.TakeCard(deck.RemoveCard(random(1, deck.GetCardCounter())));
+        player.TakeCard(deck.RemoveCard(random(1, deck.GetCardCounter()), MaxCards), winningNumber);
+        enemy.TakeCard(deck.RemoveCard(random(1, deck.GetCardCounter()), MaxCards), winningNumber);
     }
 }

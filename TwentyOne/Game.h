@@ -7,10 +7,11 @@ private:
     YourPlayer player;
     EnemyPlayer enemy;
     CardDeck deck;
-public:
-    Game(YourPlayer& player, EnemyPlayer& enemy, CardDeck& deck);
 
-    void Play();
+    bool WHOMOVE; // true - your move, false - enemy move
+    int CounterPass; // if 2 - opening of closed cards
+    int MaxCards;
+    int winningNumber;
 
     void Round();
 
@@ -19,4 +20,8 @@ public:
     void RoundResult(int result);
 
     void RestartRound();
+public:
+    Game(YourPlayer& player, EnemyPlayer& enemy, CardDeck& deck, int MaxCards);
+
+    void Play();
 };

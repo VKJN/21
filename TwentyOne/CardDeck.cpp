@@ -26,12 +26,12 @@ void CardDeck::AddCard(const Card& NewCardInDeck) {
     CardCounter++;
 }
 
-Card CardDeck::RemoveCard(int index) {
+Card CardDeck::RemoveCard(int index, int& MaxCards) {
     index--; // -1, because we started counting from 1
     Card CopyCard = deck[index];
     deck.erase(deck.begin() + index);
 
-    MAX_CARDS--;
+    MaxCards--;
     CardCounter--;
     return CopyCard;
 }
@@ -54,8 +54,8 @@ void CardDeck::ClearDeck() {
 }
 
 // Просто функция, по заполнению колоды
-void AddInDeck(CardDeck& deck) {
-    for (int i = 1; i < MAX_CARDS + 1; i++) {
+void AddInDeck(CardDeck& deck, int& MaxCards) {
+    for (int i = 1; i < MaxCards + 1; i++) {
         deck.AddCard(Card(i));
     }
 }

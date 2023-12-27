@@ -20,7 +20,7 @@ private:
 public:
     void AddCard(const Card& NewCardInDeck);
 
-    Card RemoveCard(int index);
+    Card RemoveCard(int index, int& MaxCards);
 
     int GetCardCounter();
 
@@ -29,4 +29,4 @@ public:
     void ClearDeck();
 };
 
-void AddInDeck(CardDeck& deck);
+void AddInDeck(CardDeck& deck, int& MaxCards);

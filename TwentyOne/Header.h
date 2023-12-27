@@ -1,17 +1,14 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
 #include <iostream>
+#include <fstream>
+#include <string>
 #include <ctime>
 #include <vector>
 #include <conio.h> 
+#include <SFML/Graphics.hpp>
 #include <chrono>
 #define random(a,b) (a+rand()%(b+1-a))
-
-extern bool MOVE; // true - your move, false - enemy move
-extern int CounterPass; // if 2 - opening of closed cards
-extern int MAX_CARDS;
-extern int winningNumber;
 
 enum Napravlenie { // Keyboard
     W = 119,

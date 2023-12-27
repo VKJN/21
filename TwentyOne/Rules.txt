@@ -1,0 +1,9 @@
+The goal of the game in "21" is to score 21 points by drawing cards with numbers.
+The deck is one for two. The cards are numbered from 1 to 11, without repetition.
+Each player has 10 lives. If someone loses - one burns. This will be considered a bet.
+
+Conditions of victory:
+1) The winner is the player with the amount closer to 21.
+2) Scored over 21 points - lost.
+3) If both players are outmatched, the player with the least amount wins.
+4) If the players have reached the same amount, both have lost.

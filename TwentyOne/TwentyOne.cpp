@@ -1,4 +1,5 @@
 ﻿#include "Header.h"
+#include "Config.h"
 #include "GameMenu.h"
 #include "Game.h"
 
@@ -26,11 +27,6 @@
 //    }
 //};
 
-const float width = sf::VideoMode::getDesktopMode().width;
-const float height = sf::VideoMode::getDesktopMode().height;
-const sf::Color menuTextColor(240, 150, 0, 255);
-const int tricknessSize = 3;
-
 void initText(sf::Text& text, float posX, float posY, std::string str, int sizeFont, sf::Color menuTextColor) {
     text.setCharacterSize(sizeFont);
     text.setPosition(posX, posY);
@@ -42,61 +38,66 @@ void initText(sf::Text& text, float posX, float posY, std::string str, int sizeF
 int main()
 {
     srand(time(NULL));
+    setlocale(LC_ALL, "rus");
 
-    sf::RenderWindow window(sf::VideoMode::getDesktopMode(), L"Twenty One", sf::Style::Fullscreen);
+    //sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Twenty One", sf::Style::Fullscreen);
 
-    sf::RectangleShape background(sf::Vector2f(width, height));
+    //sf::RectangleShape background(sf::Vector2f(WIDTH, HEIGHT));
 
-    sf::Texture texture_window;
-    if (!texture_window.loadFromFile("image/background.jpg")) {
-        // error...
-    }
-    background.setTexture(&texture_window);
+    //sf::Texture texture_window;
+    //if (!texture_window.loadFromFile("image/background.jpg")) {
+    //    // error...
+    //}
+    //background.setTexture(&texture_window);
 
-    sf::Font menuFont;
-    if (!menuFont.loadFromFile("fonts/ariali.ttf")) {
-        // error...
-    }
+    //sf::Font menuFont;
+    //if (!menuFont.loadFromFile("fonts/ariali.ttf")) {
+    //    // error...
+    //}
 
-    sf::Text titul;
-    titul.setFont(menuFont);
-    initText(titul, 600, 50, "Twenty One", 125, menuTextColor);
+    //sf::Text titul;
+    //titul.setFont(menuFont);
+    //initText(titul, 600, 50, "Twenty One", 125, menuTextColor);
 
-    std::string nameMenu[4]{ "Play", "Options", "About play", "Exit" };
+    //std::vector<std::string> nameMenu{ "Play", "About game", "Exit" };
 
-    GameMenu game(950, 350, 65, 120, nameMenu);
-    game.setColorTextMenu(menuTextColor, sf::Color::Red);
-    game.AlignMenu();
+    //GameMenu game(950, 400, 65, 150, nameMenu);
+    //game.setColorTextMenu(menuTextColor);
+    //game.AlignMenu();
 
-    while (window.isOpen()) {
-        sf::Event event;
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed) {
-                window.close();
-            }
+    //while (window.isOpen()) {
+    //    sf::Event event;
+    //    while (window.pollEvent(event)) {
+    //        if (event.type == sf::Event::Closed) {
+    //            window.close();
+    //        }
 
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-                window.close();
-            }
-        }
+    //        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+    //            window.close();
+    //        }
 
-        window.clear();
-        window.draw(background);
-        window.draw(titul);
-        game.draw(window);
-        window.display();
-    }
+    //        int resultMenu = game.GamePlayMenu(window, background, titul, event);
 
-    //CardDeck deck;
-    //AddInDeck(deck);
+    //    }
+    //    window.clear();
+    //    window.draw(background);
+    //    //window.draw(titul);
+    //    //game.draw(window); 
+    //    window.display();
+    //}
 
-    //YourPlayer player(deck.RemoveCard(random(1, MAX_CARDS)), deck.RemoveCard(random(1, MAX_CARDS)));
-    //EnemyPlayer enemy(deck.RemoveCard(random(1, MAX_CARDS)), deck.RemoveCard(random(1, MAX_CARDS)));
+    int MaxCards = 11;
 
-    //Game game21(player, enemy, deck);
+    CardDeck deck;
+    AddInDeck(deck, MaxCards);
 
-    ////Потом сделать Do While
-    //game21.Play();
+    YourPlayer player(deck.RemoveCard(random(1, MaxCards), MaxCards), deck.RemoveCard(random(1, MaxCards), MaxCards));
+    EnemyPlayer enemy(deck.RemoveCard(random(1, MaxCards), MaxCards), deck.RemoveCard(random(1, MaxCards), MaxCards));
+
+    Game game21(player, enemy, deck, MaxCards);
+
+    //Потом сделать Do While
+    game21.Play();
 
     /*for (int i = 0;; ++i) {      Для проверки, какая клавиша под каким номером
         if (_kbhit()) {
@@ -116,5 +117,4 @@ int main()
             cout << "Time elapsed - " << ++SecondsPassed;
         }
     }*/
-    return 0;
 }

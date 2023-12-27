@@ -3,9 +3,9 @@
 
 class Player {
 public:
-    virtual void TakeCard(const Card& NewCard) = 0;
-    virtual void Pass() = 0;
-    virtual void Move(CardDeck& Deck) = 0;
+    virtual void TakeCard(const Card& NewCard, int& winningNumber) = 0;
+    virtual void Pass(bool& WHOMOVE, int& CounterPass) = 0;
+    virtual void Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& MaxCards, int& winningNumber) = 0;
 
     virtual void showCards() = 0;
 
@@ -27,15 +27,15 @@ private:
     int Bid = 1;
     int Life = 10;
 
-    void Pass();
+    void Pass(bool& WHOMOVE, int& CounterPass);
 
 public:
     YourPlayer();
     YourPlayer(const Card& FirstCard, const Card& SecondCard);
 
-    void TakeCard(const Card& NewCard);
+    void TakeCard(const Card& NewCard, int& winningNumber);
 
-    void Move(CardDeck& Deck);
+    void Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& MaxCards, int& winningNumber);
 
     void showCards();
 
@@ -61,15 +61,15 @@ private:
     int Bid = 1;
     int Life = 10;
 
-    void Pass();
+    void Pass(bool& WHOMOVE, int& CounterPass);
 
 public:
     EnemyPlayer();
     EnemyPlayer(const Card& FirstCard, const Card& SecondCard);
 
-    void TakeCard(const Card& NewCard);
+    void TakeCard(const Card& NewCard, int& winningNumber);
 
-    void Move(CardDeck& Deck);
+    void Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& MaxCards, int& winningNumber);
 
     void showCards();
 
