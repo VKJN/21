@@ -13,7 +13,7 @@ private:
     int MaxCards;
     int winningNumber;
 
-    void Round();
+    void Round(sf::RenderWindow& window);
 
     int CheckWinner();
 
@@ -23,5 +23,5 @@ private:
 public:
     Game(YourPlayer& player, EnemyPlayer& enemy, CardDeck& deck, int MaxCards);
 
-    void Play();
+    void Play(sf::RenderWindow& window);
 };

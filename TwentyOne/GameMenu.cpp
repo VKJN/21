@@ -45,8 +45,8 @@ void GameMenu::setColorTextMenu(sf::Color color) {
 	}
 }
 
-int GameMenu::GamePlayMenu(sf::RenderWindow& window, sf::RectangleShape& background, sf::Text& titul, sf::Event event) {
-	int resultMenu = 0;
+bool GameMenu::GamePlayMenu(sf::RenderWindow& window, sf::RectangleShape& background, sf::Text& titul, sf::Event event) {
+	bool resultMenu = false;
 	while (resultMenu == 0) {
 		while (window.pollEvent(event)) {
 			if (event.type == sf::Event::Closed) {
@@ -77,7 +77,7 @@ int GameMenu::GamePlayMenu(sf::RenderWindow& window, sf::RectangleShape& backgro
 						if (mainMenu[i].getGlobalBounds().contains(float(mousePosition.x), float(mousePosition.y))) {
 							switch (i) {
 							case 0:
-								resultMenu = 1;
+								resultMenu = true;
 								break;
 							case 1:
 								OpenRules(window, background, event);
@@ -98,31 +98,38 @@ int GameMenu::GamePlayMenu(sf::RenderWindow& window, sf::RectangleShape& backgro
 		draw(window); 
 		window.display();
 	}
-	return resultMenu;	
+	return resultMenu;
 }
 
+// Функция для вывода правил из файла
 void GameMenu::OpenRules(sf::RenderWindow& window, sf::RectangleShape& background, sf::Event event) { 
-	std::ifstream rulesFile(rulesPath); // Функция для вывода правил из файла
+	std::ifstream rulesFile(rulesPath);
 	std::string lineText;
-	sf::Text textFromFile;
+	sf::Text text;
 
 	bool returnMenu = false;
 	while (!returnMenu) {
 		if (rulesFile.is_open()) {
 			while (std::getline(rulesFile, lineText)) {
-				setInitText(textFromFile, lineText, 100, 900, sf::Color::White, 30);  // Позицию текста сделать
+				setInitText(text, lineText, textPosX, textPosY, sf::Color::White, 40);
+				textFromFile.push_back(text);
+				textPosY += 40;
 			}
 		}
 		rulesFile.close();
 
 		while (window.pollEvent(event)) {
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+			if (event.type == sf::Event::KeyPressed) {
 				returnMenu = true;
 			}
 		}
 		window.clear();
 		window.draw(background);
-		window.draw(textFromFile);
+		for (auto i : textFromFile) {
+			window.draw(i);
+		}
 		window.display();
 	}
+	textFromFile.clear(); // Очистка вектора, чтобы при повторном открытии файла не было прошлого текста
+	textPosY = 500; // Чтобы текст не уезжал вниз
 }

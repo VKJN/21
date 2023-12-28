@@ -41,63 +41,70 @@ int main()
     setlocale(LC_ALL, "rus");
 
     //sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Twenty One", sf::Style::Fullscreen);
+    sf::RenderWindow window(sf::VideoMode(1800, 1000), "Twenty One");
 
-    //sf::RectangleShape background(sf::Vector2f(WIDTH, HEIGHT));
+    sf::RectangleShape background(sf::Vector2f(WIDTH, HEIGHT));
 
-    //sf::Texture texture_window;
-    //if (!texture_window.loadFromFile("image/background.jpg")) {
-    //    // error...
-    //}
-    //background.setTexture(&texture_window);
+    sf::Texture texture_window;
+    if (!texture_window.loadFromFile("image/background.jpg")) {
+        // error...
+    }
+    background.setTexture(&texture_window);
 
-    //sf::Font menuFont;
-    //if (!menuFont.loadFromFile("fonts/ariali.ttf")) {
-    //    // error...
-    //}
+    sf::Font menuFont;
+    if (!menuFont.loadFromFile("fonts/ariali.ttf")) {
+        // error...
+    }
 
-    //sf::Text titul;
-    //titul.setFont(menuFont);
-    //initText(titul, 600, 50, "Twenty One", 125, menuTextColor);
+    sf::Text titul;
+    titul.setFont(menuFont);
+    initText(titul, 600, 50, "Twenty One", 125, menuTextColor);
 
-    //std::vector<std::string> nameMenu{ "Play", "About game", "Exit" };
+    std::vector<std::string> nameMenu{ "Play", "Rules", "Exit" };
 
-    //GameMenu game(950, 400, 65, 150, nameMenu);
-    //game.setColorTextMenu(menuTextColor);
-    //game.AlignMenu();
+    GameMenu Menu(950, 400, 65, 150, nameMenu);
+    Menu.setColorTextMenu(menuTextColor);
+    Menu.AlignMenu();
 
-    //while (window.isOpen()) {
-    //    sf::Event event;
-    //    while (window.pollEvent(event)) {
-    //        if (event.type == sf::Event::Closed) {
-    //            window.close();
-    //        }
+    while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                window.close();
+            }
 
-    //        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-    //            window.close();
-    //        }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+                window.close();
+            }
 
-    //        int resultMenu = game.GamePlayMenu(window, background, titul, event);
+            if (Menu.GamePlayMenu(window, background, titul, event)) {
+                // Очистка, оставляем только фон
+                window.clear();
+                window.draw(background);
+                window.display();
 
-    //    }
-    //    window.clear();
-    //    window.draw(background);
-    //    //window.draw(titul);
-    //    //game.draw(window); 
-    //    window.display();
-    //}
+                int MaxCards = 11;
 
-    int MaxCards = 11;
+                CardDeck deck;
+                AddInDeck(deck, MaxCards);
+                deck.show(window);
+                int a;
+                std::cin >> a;
+               
+                //YourPlayer player(deck.RemoveCard(random(1, MaxCards), MaxCards), deck.RemoveCard(random(1, MaxCards), MaxCards));
+                //EnemyPlayer enemy(deck.RemoveCard(random(1, MaxCards), MaxCards), deck.RemoveCard(random(1, MaxCards), MaxCards));
 
-    CardDeck deck;
-    AddInDeck(deck, MaxCards);
+                //Game game21(player, enemy, deck, MaxCards);
 
-    YourPlayer player(deck.RemoveCard(random(1, MaxCards), MaxCards), deck.RemoveCard(random(1, MaxCards), MaxCards));
-    EnemyPlayer enemy(deck.RemoveCard(random(1, MaxCards), MaxCards), deck.RemoveCard(random(1, MaxCards), MaxCards));
-
-    Game game21(player, enemy, deck, MaxCards);
-
-    //Потом сделать Do While
-    game21.Play();
+                ////Потом сделать Do While
+                //game21.Play();
+            }
+        }
+        window.clear();
+        window.draw(background);
+        window.draw(titul);
+        window.display();
+    }
 
     /*for (int i = 0;; ++i) {      Для проверки, какая клавиша под каким номером
         if (_kbhit()) {

@@ -53,9 +53,9 @@ void YourPlayer::Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& MaxC
     }
 }
 
-void YourPlayer::showCards() {
+void YourPlayer::showCards(sf::RenderWindow& window) {
     for (auto i : Array_of_cards) {
-        i.Show();
+        i.Show(window);
     }
 }
 
@@ -117,9 +117,9 @@ void EnemyPlayer::Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& Max
     }
 }
 
-void EnemyPlayer::showCards() {
+void EnemyPlayer::showCards(sf::RenderWindow& window) {
     for (auto i : Array_of_cards) {
-        i.Show();
+        i.Show(window);
     }
 }
 

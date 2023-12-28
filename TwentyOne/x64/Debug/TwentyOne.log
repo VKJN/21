@@ -1,2 +1,12 @@
-﻿  Player.cpp
+﻿  CardDeck.cpp
+d:\projects\21\twentyone\carddeck.cpp(26): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+  Game.cpp
+  Player.cpp
+  TwentyOne.cpp
+d:\projects\21\twentyone\config.h(4): warning C4244: инициализация: преобразование "unsigned int" в "float", возможна потеря данных
+d:\projects\21\twentyone\config.h(4): warning C4244: инициализация: преобразование "unsigned int" в "const float", возможна потеря данных
+d:\projects\21\twentyone\config.h(5): warning C4244: инициализация: преобразование "unsigned int" в "float", возможна потеря данных
+d:\projects\21\twentyone\config.h(5): warning C4244: инициализация: преобразование "unsigned int" в "const float", возможна потеря данных
+d:\projects\21\twentyone\twentyone.cpp(40): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+  Создание кода...
   TwentyOne.vcxproj -> D:\Projects\21\TwentyOne\x64\Debug\TwentyOne.exe

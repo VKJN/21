@@ -11,7 +11,10 @@ private:
 	std::string rulesPath = "Rules.txt";
 
 	sf::Font font;
+
 	std::vector<sf::Text> mainMenu;
+	std::vector<sf::Text> textFromFile;
+	int textPosX = 250, textPosY = 500;
 
 	sf::Color menuColor;
 		
@@ -27,5 +30,5 @@ public:
 
 	void AlignMenu();
 
-	int GamePlayMenu(sf::RenderWindow& window, sf::RectangleShape& background, sf::Text& titul, sf::Event event);
+	bool GamePlayMenu(sf::RenderWindow& window, sf::RectangleShape& background, sf::Text& titul, sf::Event event);
 };

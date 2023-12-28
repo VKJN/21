@@ -3,14 +3,17 @@
 class Card {
 private:
     int number;
+    sf::RectangleShape textureCard;
 public:
-    Card(int value);
+    Card(int value, sf::Texture& texture_card);
 
-    Card(const Card& copy);
+    Card(const Card& copy, sf::Texture& texture_card);
 
     int GetNumber() const;
 
-    void Show();
+    void Show(sf::RenderWindow& window);
+
+    void setTextureCardPosition(int posX, int posY);
 };
 
 class CardDeck {
@@ -27,6 +30,8 @@ public:
     void SetCardCounter(int newCardCounter);
 
     void ClearDeck();
+
+    void show(sf::RenderWindow& window);
 };
 
 void AddInDeck(CardDeck& deck, int& MaxCards);

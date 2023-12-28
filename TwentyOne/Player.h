@@ -7,7 +7,7 @@ public:
     virtual void Pass(bool& WHOMOVE, int& CounterPass) = 0;
     virtual void Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& MaxCards, int& winningNumber) = 0;
 
-    virtual void showCards() = 0;
+    virtual void showCards(sf::RenderWindow& window) = 0;
 
     virtual int GetLife() = 0;
     virtual int GetBid() = 0;
@@ -37,7 +37,7 @@ public:
 
     void Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& MaxCards, int& winningNumber);
 
-    void showCards();
+    void showCards(sf::RenderWindow& window);
 
     int GetCardSum();
 
@@ -71,7 +71,7 @@ public:
 
     void Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& MaxCards, int& winningNumber);
 
-    void showCards();
+    void showCards(sf::RenderWindow& window);
 
     int GetCardSum();
 

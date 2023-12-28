@@ -11,9 +11,9 @@ Game::Game(YourPlayer& player, EnemyPlayer& enemy, CardDeck& deck, int MaxCards)
     this->winningNumber = 21;
 }
 
-void Game::Play() {
+void Game::Play(sf::RenderWindow& window) {
     do {
-        Round();
+        Round(window);
         RoundResult(CheckWinner());
         RestartRound();
     } while (player.GetLife() > 0 || enemy.GetLife() > 0);
@@ -26,14 +26,14 @@ void Game::Play() {
     }
 }
 
-void Game::Round() {
+void Game::Round(sf::RenderWindow& window) {
     std::cout << "New round" << std::endl;
     WHOMOVE = random(0, 1);
     do {
-        enemy.showCards();
+        enemy.showCards(window);
         std::cout << std::endl << enemy.GetCardSum() << "/" << winningNumber << "\n\n";
 
-        player.showCards();
+        player.showCards(window);
         std::cout << std::endl << player.GetCardSum() << "/" << winningNumber << "\n\n";
 
         std::cout << "CounterPass: " << CounterPass << "\n\n\n";
