@@ -11,8 +11,9 @@ void GameMenu::setInitText(sf::Text& text, std::string& str, float xpos, float y
 	text.setOutlineThickness(tricknessSize);
 }
 
+// Метод, для установки текста посередине экрана
 void GameMenu::AlignMenu() {
-	float nullx = 0;   // Переменная для того, чтобы правильно выставить на экране текст (посередине)
+	float nullx = 0;
 
 	for (int i = 0; i < mainMenu.size(); i++) {
 		nullx = mainMenu[i].getLocalBounds().width / 2;
@@ -45,81 +46,83 @@ void GameMenu::setColorTextMenu(sf::Color color) {
 	}
 }
 
-bool GameMenu::GamePlayMenu(sf::RenderWindow& window, sf::RectangleShape& background, sf::Text& titul, sf::Event event) {
+// Методы отвечающие за работу меню
+void GameMenu::GamePlayMenu(sf::RenderWindow& window, sf::RectangleShape& background, sf::Text& titul, sf::Event& event) {
 	bool resultMenu = false;
-	while (resultMenu == 0) {
+
+	while (!resultMenu && window.isOpen()) {
 		while (window.pollEvent(event)) {
-			if (event.type == sf::Event::Closed) {
-				window.close();
-			}
-
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-				window.close();
-			}
-			sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
-			
-			// Проверка, если координаты мыши попадают по кнопке, она меняет цвет
-			for (int i = 0; i < mainMenu.size(); i++) {
-				if (mainMenu[i].getGlobalBounds().contains(float(mousePosition.x), float(mousePosition.y))) {
-					mainMenu[i].setFillColor(menuColor);
-				}
-				else {
-					mainMenu[i].setFillColor(sf::Color::White);
-				}
-			}
-
-			if (event.type == sf::Event::MouseButtonPressed) {
-				if (event.mouseButton.button == sf::Mouse::Left) {
-					sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
-
-					// Проверка, на какую кнопку в меню нажали
-					for (int i = 0; i < mainMenu.size(); i++) {
-						if (mainMenu[i].getGlobalBounds().contains(float(mousePosition.x), float(mousePosition.y))) {
-							switch (i) {
-							case 0:
-								resultMenu = true;
-								break;
-							case 1:
-								OpenRules(window, background, event);
-								break;
-							case 2:
-								window.close();
-								std::exit(0);
-								break;
-							}
-						}
-					}
-				}
-			}
+			handleEvent(window, event, background, resultMenu); // Обработка событий
 		}
 		window.clear();
 		window.draw(background);
 		window.draw(titul);
-		draw(window); 
+		draw(window);
 		window.display();
 	}
-	return resultMenu;
+}
+
+void GameMenu::handleEvent(sf::RenderWindow& window, sf::Event& event, sf::RectangleShape& background, bool& resultMenu) {
+	// Проверка, если координаты мыши попадают по кнопке, она меняет цвет
+	sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+	for (int i = 0; i < mainMenu.size(); i++) {
+		if (mainMenu[i].getGlobalBounds().contains(float(mousePosition.x), float(mousePosition.y))) {
+			mainMenu[i].setFillColor(menuColor);
+		}
+		else {
+			mainMenu[i].setFillColor(sf::Color::White);
+		}
+	}
+
+	if (event.type == sf::Event::Closed) {
+		window.close();
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+		window.close();
+	}
+	if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+		handleMouseClick(window, event, background, resultMenu, mousePosition);
+	}
+}
+
+void GameMenu::handleMouseClick(sf::RenderWindow& window, sf::Event& event, sf::RectangleShape& background, bool& resultMenu, const sf::Vector2i& mousePosition) {
+	for (int i = 0; i < mainMenu.size(); i++) {
+		if (mainMenu[i].getGlobalBounds().contains(float(mousePosition.x), float(mousePosition.y))) {
+			switch (i) {
+			case 0:
+				resultMenu = true;
+				break;
+			case 1:
+				OpenRules(window, background, event);
+				break;
+			case 2:
+				window.close();
+				std::exit(0);
+				break;
+			}
+		}
+	}
 }
 
 // Функция для вывода правил из файла
-void GameMenu::OpenRules(sf::RenderWindow& window, sf::RectangleShape& background, sf::Event event) { 
+void GameMenu::OpenRules(sf::RenderWindow& window, sf::RectangleShape& background, sf::Event& event) { 
 	std::ifstream rulesFile(rulesPath);
 	std::string lineText;
 	sf::Text text;
 
+	if (rulesFile.is_open()) {
+		while (std::getline(rulesFile, lineText)) {
+			setInitText(text, lineText, textPosX, textPosY, sf::Color::White, 40);
+			textFromFile.push_back(text);
+			textPosY += 40;
+		}
+	}
+	rulesFile.close();
+
 	bool returnMenu = false;
 	while (!returnMenu) {
-		if (rulesFile.is_open()) {
-			while (std::getline(rulesFile, lineText)) {
-				setInitText(text, lineText, textPosX, textPosY, sf::Color::White, 40);
-				textFromFile.push_back(text);
-				textPosY += 40;
-			}
-		}
-		rulesFile.close();
-
 		while (window.pollEvent(event)) {
-			if (event.type == sf::Event::KeyPressed) {
+			if (event.type == sf::Event::KeyPressed || event.type == sf::Event::MouseButtonPressed) {
 				returnMenu = true;
 			}
 		}

@@ -3,11 +3,12 @@
 class Card {
 private:
     int number;
-    sf::RectangleShape textureCard;
+    sf::Sprite spriteCard;
+    sf::Texture textureCard;
 public:
-    Card(int value, sf::Texture& texture_card);
+    Card(int value, sf::Texture texture_card);
 
-    Card(const Card& copy, sf::Texture& texture_card);
+    Card(const Card& copy);
 
     int GetNumber() const;
 

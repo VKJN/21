@@ -3,14 +3,16 @@
 
 // Методы класса Card
 
-Card::Card(int value, sf::Texture& texture_card) {
+Card::Card(int value, sf::Texture texture_card) {
     this->number = value;
-    textureCard.setTexture(&texture_card);
+    this->textureCard = texture_card;
+    spriteCard.setTexture(textureCard);
 }
 
-Card::Card(const Card& copy, sf::Texture& texture_card) {
+Card::Card(const Card& copy) {
     this->number = copy.number;
-    this->textureCard.setTexture(&texture_card);
+    this->textureCard = copy.textureCard;
+    spriteCard.setTexture(copy.textureCard);
 }
 
 int Card::GetNumber() const {
@@ -18,12 +20,13 @@ int Card::GetNumber() const {
 }
 
 void Card::Show(sf::RenderWindow& window) {
-    window.draw(textureCard);
-    std::cout << number << std::endl;
+    window.draw(spriteCard);
+    //std::cout << number << std::endl;
+    std::cout << "Card number: " << number << " Position: (" << spriteCard.getPosition().x << ", " << spriteCard.getPosition().y << ")" << std::endl;
 }
 
 void Card::setTextureCardPosition(int posX, int posY) {
-    textureCard.setPosition(posX, posY);
+    spriteCard.setPosition(posX, posY);
 }
 
 // Методы класса CardDeck
@@ -61,23 +64,25 @@ void CardDeck::ClearDeck() {
 }
 
 void CardDeck::show(sf::RenderWindow& window) {
-    int x = 300, y = 300;
-    for (int i = 0; i < CardCounter; i++) {
-        deck[i].setTextureCardPosition(x, y);
-        deck[i].Show(window);
-        x += 50;
+    int x = 100, y = 300;
+    for (auto i : deck) {
+        i.setTextureCardPosition(x, y);
+        i.Show(window);
+        x += 155;
     }
+    std::cout << "Number of cards on screen: " << CardCounter << std::endl;
 }
 
 // Просто функция по заполнению колоды
 void AddInDeck(CardDeck& deck, int& MaxCards) {
+    sf::Texture texture_card;
     for (int i = 1; i < MaxCards + 1; i++) {
-        sf::Texture texture_card;
         std::string cardTexturePath = "image/" + std::to_string(i) + ".jpg";
 
         if (!texture_card.loadFromFile(cardTexturePath)) {
-            // error...
+            std::cout << "Failed to load texture for card " << i << std::endl;
         }
+        texture_card.setSmooth(true);
         deck.AddCard(Card(i, texture_card));
     }
 }

@@ -65,47 +65,48 @@ int main()
     GameMenu Menu(950, 400, 65, 150, nameMenu);
     Menu.setColorTextMenu(menuTextColor);
     Menu.AlignMenu();
+    
+    int MaxCards = 11;
 
+    CardDeck deck;
+    AddInDeck(deck, MaxCards);
+
+    bool shouldRunGamePlayMenu = true;
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
-
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
                 window.close();
             }
 
-            if (Menu.GamePlayMenu(window, background, titul, event)) {
-                // Очистка, оставляем только фон
-                window.clear();
-                window.draw(background);
-                window.display();
-
-                int MaxCards = 11;
-
-                CardDeck deck;
-                AddInDeck(deck, MaxCards);
-                deck.show(window);
-                int a;
-                std::cin >> a;
-               
-                //YourPlayer player(deck.RemoveCard(random(1, MaxCards), MaxCards), deck.RemoveCard(random(1, MaxCards), MaxCards));
-                //EnemyPlayer enemy(deck.RemoveCard(random(1, MaxCards), MaxCards), deck.RemoveCard(random(1, MaxCards), MaxCards));
-
-                //Game game21(player, enemy, deck, MaxCards);
-
-                ////Потом сделать Do While
-                //game21.Play();
+            if (shouldRunGamePlayMenu) {
+                Menu.GamePlayMenu(window, background, titul, event);
+                shouldRunGamePlayMenu = false;
             }
+
+            //YourPlayer player(deck.RemoveCard(random(1, MaxCards), MaxCards), deck.RemoveCard(random(1, MaxCards), MaxCards));
+            //EnemyPlayer enemy(deck.RemoveCard(random(1, MaxCards), MaxCards), deck.RemoveCard(random(1, MaxCards), MaxCards));
+            
+            //Game game21(player, enemy, deck, MaxCards);
+
+            ////Потом сделать Do While
+            //game21.Play();
+            
         }
-        window.clear();
+        /*window.clear();
         window.draw(background);
         window.draw(titul);
+        window.display();*/
+
+        window.clear();
+        window.draw(background);
+        deck.show(window);
         window.display();
     }
-
+   
     /*for (int i = 0;; ++i) {      Для проверки, какая клавиша под каким номером
         if (_kbhit()) {
             int key = _getch();
