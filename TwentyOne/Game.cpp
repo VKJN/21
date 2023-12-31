@@ -9,6 +9,11 @@ Game::Game(YourPlayer& player, EnemyPlayer& enemy, CardDeck& deck, int MaxCards)
     this->CounterPass = 0;
     this->MaxCards = MaxCards;
     this->winningNumber = 21;
+
+    if (!font.loadFromFile("fonts/ariali.ttf")) {
+        // error...
+    }
+    text.setFont(font);
 }
 
 void Game::Play(sf::RenderWindow& window) {
@@ -28,13 +33,19 @@ void Game::Play(sf::RenderWindow& window) {
 
 void Game::Round(sf::RenderWindow& window) {
     std::cout << "New round" << std::endl;
+    //AddText("New round", sf::Color::White, 30, window);             // Сделать, чтобы текст был на экране только 2 секунды
+    //window.draw(text);
+    //window.display();
+
+    //std::this_thread::sleep_for(std::chrono::seconds(2));
+    
     WHOMOVE = random(0, 1);
     do {
         enemy.showCards(window);
-        std::cout << std::endl << enemy.GetCardSum() << "/" << winningNumber << "\n\n";
+        std::cout << "Enemy card sum: " << enemy.GetCardSum() << "/" << winningNumber << "\n\n";
 
         player.showCards(window);
-        std::cout << std::endl << player.GetCardSum() << "/" << winningNumber << "\n\n";
+        std::cout << "Your card sum: " << player.GetCardSum() << "/" << winningNumber << "\n\n";
 
         std::cout << "CounterPass: " << CounterPass << "\n\n\n";
 
@@ -54,7 +65,6 @@ int Game::CheckWinner() {
         2 - победа игрока
         3 - победа противника
     */
-
     int playerSum = player.GetCardSum();
     int enemySum = enemy.GetCardSum();
 
@@ -94,8 +104,8 @@ void Game::RoundResult(int result) {
 }
 
 void Game::RestartRound() {
-    player.SetBid(1);
-    enemy.SetBid(1);
+    //player.SetBid(1);
+    //enemy.SetBid(1);
 
     CounterPass = 0;
 
@@ -114,4 +124,11 @@ void Game::RestartRound() {
         player.TakeCard(deck.RemoveCard(random(1, deck.GetCardCounter()), MaxCards), winningNumber);
         enemy.TakeCard(deck.RemoveCard(random(1, deck.GetCardCounter()), MaxCards), winningNumber);
     }
+}
+
+void Game::AddText(std::string newText, sf::Color newColor, int size, sf::RenderWindow& window) {
+    text = sf::Text(newText, font, size);
+    text.setFillColor(newColor);
+    text.setPosition((window.getSize().x - text.getLocalBounds().width) / 2,
+        (window.getSize().y - text.getLocalBounds().height) / 2);
 }

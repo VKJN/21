@@ -13,6 +13,10 @@ private:
     int MaxCards;
     int winningNumber;
 
+    sf::Font font;
+    sf::Text text;
+    int textPosX, textPosY;
+
     void Round(sf::RenderWindow& window);
 
     int CheckWinner();
@@ -20,6 +24,8 @@ private:
     void RoundResult(int result);
 
     void RestartRound();
+
+    void AddText(std::string newText, sf::Color newColor, int size, sf::RenderWindow& window);
 public:
     Game(YourPlayer& player, EnemyPlayer& enemy, CardDeck& deck, int MaxCards);
 

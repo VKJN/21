@@ -24,7 +24,7 @@ void GameMenu::AlignMenu() {
 GameMenu::GameMenu(float menux, float menuy, int sizeFont, int step, std::vector<std::string>& name)
 	:menuX(menux), menuY(menuy), menuStep(step), sizeFont(sizeFont), mainMenu(name.size())
 {
-	if (!font.loadFromFile("fonts/ariali.ttf")) {
+	if (!font.loadFromFile("fonts/comic.ttf")) {
 		// error...
 	}
 

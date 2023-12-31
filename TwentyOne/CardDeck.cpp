@@ -3,7 +3,7 @@
 
 // Методы класса Card
 
-Card::Card(int value, sf::Texture texture_card) {
+Card::Card(int value, sf::Texture& texture_card) {
     this->number = value;
     this->textureCard = texture_card;
     spriteCard.setTexture(textureCard);
@@ -21,12 +21,19 @@ int Card::GetNumber() const {
 
 void Card::Show(sf::RenderWindow& window) {
     window.draw(spriteCard);
-    //std::cout << number << std::endl;
-    std::cout << "Card number: " << number << " Position: (" << spriteCard.getPosition().x << ", " << spriteCard.getPosition().y << ")" << std::endl;
 }
 
 void Card::setTextureCardPosition(int posX, int posY) {
     spriteCard.setPosition(posX, posY);
+}
+
+void Card::setScale(int x,int y) {
+    spriteCard.setScale(x, y);
+}
+
+void Card::changeTexture(sf::Texture newTexture) {
+    this->textureCard = newTexture;
+    spriteCard.setTexture(textureCard);
 }
 
 // Методы класса CardDeck
@@ -70,7 +77,6 @@ void CardDeck::show(sf::RenderWindow& window) {
         i.Show(window);
         x += 155;
     }
-    std::cout << "Number of cards on screen: " << CardCounter << std::endl;
 }
 
 // Просто функция по заполнению колоды

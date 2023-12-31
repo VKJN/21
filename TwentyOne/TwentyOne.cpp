@@ -40,6 +40,8 @@ int main()
     srand(time(NULL));
     setlocale(LC_ALL, "rus");
 
+    // Установка фона, шрифта, текста, подготовка меню
+
     //sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Twenty One", sf::Style::Fullscreen);
     sf::RenderWindow window(sf::VideoMode(1800, 1000), "Twenty One");
 
@@ -52,7 +54,7 @@ int main()
     background.setTexture(&texture_window);
 
     sf::Font menuFont;
-    if (!menuFont.loadFromFile("fonts/ariali.ttf")) {
+    if (!menuFont.loadFromFile("fonts/comici.ttf")) {
         // error...
     }
 
@@ -65,11 +67,8 @@ int main()
     GameMenu Menu(950, 400, 65, 150, nameMenu);
     Menu.setColorTextMenu(menuTextColor);
     Menu.AlignMenu();
-    
-    int MaxCards = 11;
 
-    CardDeck deck;
-    AddInDeck(deck, MaxCards);
+    int MaxCards = 11;
 
     bool shouldRunGamePlayMenu = true;
     while (window.isOpen()) {
@@ -85,14 +84,22 @@ int main()
             if (shouldRunGamePlayMenu) {
                 Menu.GamePlayMenu(window, background, titul, event);
                 shouldRunGamePlayMenu = false;
+
+                window.clear();
+                window.draw(background);
+                window.display();
+
+                CardDeck deck;
+                AddInDeck(deck, MaxCards);
+
+                YourPlayer player(deck.RemoveCard(random(1, MaxCards), MaxCards), deck.RemoveCard(random(1, MaxCards), MaxCards));
+                EnemyPlayer enemy(deck.RemoveCard(random(1, MaxCards), MaxCards), deck.RemoveCard(random(1, MaxCards), MaxCards));
+
+                Game game21(player, enemy, deck, MaxCards);
+                game21.Play(window);
             }
 
-            //YourPlayer player(deck.RemoveCard(random(1, MaxCards), MaxCards), deck.RemoveCard(random(1, MaxCards), MaxCards));
-            //EnemyPlayer enemy(deck.RemoveCard(random(1, MaxCards), MaxCards), deck.RemoveCard(random(1, MaxCards), MaxCards));
-            
-            //Game game21(player, enemy, deck, MaxCards);
-
-            ////Потом сделать Do While
+            //Потом сделать Do While
             //game21.Play();
             
         }
@@ -103,7 +110,9 @@ int main()
 
         window.clear();
         window.draw(background);
-        deck.show(window);
+        //player.showCards(window);
+        //enemy.showCards(window);
+        //deck.show(window);
         window.display();
     }
    

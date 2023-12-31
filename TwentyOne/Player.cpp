@@ -37,7 +37,7 @@ void YourPlayer::Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& MaxC
     int key;
     key = _getch();
     switch (key) {
-    case Napravlenie::Two:
+    case 2:
         try {
             TakeCard(Deck.RemoveCard(random(1, Deck.GetCardCounter()), MaxCards), winningNumber);
             CounterPass = 0;
@@ -47,7 +47,7 @@ void YourPlayer::Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& MaxC
             std::cout << error_message << std::endl;
         }
         break;
-    case Napravlenie::Three:
+    case 3:
         Pass(WHOMOVE, CounterPass);
         break;
     }
@@ -55,8 +55,11 @@ void YourPlayer::Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& MaxC
 
 void YourPlayer::showCards(sf::RenderWindow& window) {
     for (auto i : Array_of_cards) {
+        i.setTextureCardPosition(cardPosX, cardPosY);
         i.Show(window);
+        cardPosX += 170;
     }
+    cardPosX = 650;
 }
 
 int YourPlayer::GetCardSum() {
@@ -75,9 +78,9 @@ void YourPlayer::SetLife(int newLife) {
     this->Life = newLife;
 }
 
-void YourPlayer::SetBid(int newBid) {
-    this->Bid = newBid;
-}
+//void YourPlayer::SetBid(int newBid) {
+//    this->Bid = newBid;
+//}
 
 void YourPlayer::SetCardSum(int newCardSum) {
     this->CardSum = newCardSum;
@@ -93,7 +96,12 @@ EnemyPlayer::EnemyPlayer() {}
 EnemyPlayer::EnemyPlayer(const Card& FirstCard, const Card& SecondCard) {
     Array_of_cards.push_back(FirstCard);
     Array_of_cards.push_back(SecondCard);
+
     CardSum += FirstCard.GetNumber() + SecondCard.GetNumber();
+
+    sf::Texture newCardTexture;
+    newCardTexture.loadFromFile("image/back of the card.jpg");
+    ChangeFirstCardTexture(newCardTexture);
 }
 
 void EnemyPlayer::TakeCard(const Card& NewCard, int& winningNumber) {
@@ -119,8 +127,12 @@ void EnemyPlayer::Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& Max
 
 void EnemyPlayer::showCards(sf::RenderWindow& window) {
     for (auto i : Array_of_cards) {
+        i.setScale(-1, -1);
+        i.setTextureCardPosition(cardPosX, cardPosY);
         i.Show(window);
+        cardPosX += 170;
     }
+    cardPosX = 800;
 }
 
 int EnemyPlayer::GetCardSum() {
@@ -139,9 +151,9 @@ void EnemyPlayer::SetLife(int newLife) {
     this->Life = newLife;
 }
 
-void EnemyPlayer::SetBid(int newBid) {
-    this->Bid = newBid;
-}
+//void EnemyPlayer::SetBid(int newBid) {
+//    this->Bid = newBid;
+//}
 
 void EnemyPlayer::SetCardSum(int newCardSum) {
     this->CardSum = newCardSum;
@@ -149,4 +161,8 @@ void EnemyPlayer::SetCardSum(int newCardSum) {
 
 void EnemyPlayer::ClearArray() {
     Array_of_cards.clear();
+}
+
+void EnemyPlayer::ChangeFirstCardTexture(sf::Texture newTexture) {
+    Array_of_cards[0].changeTexture(newTexture);
 }

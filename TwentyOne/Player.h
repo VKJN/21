@@ -13,7 +13,7 @@ public:
     virtual int GetBid() = 0;
     virtual int GetCardSum() = 0;
 
-    virtual void SetBid(int newBid) = 0;
+    //virtual void SetBid(int newBid) = 0;
     virtual void SetLife(int newAlive) = 0;
     virtual void SetCardSum(int newCardSum) = 0;
 
@@ -25,10 +25,11 @@ private:
     std::vector<Card> Array_of_cards;
     int CardSum = 0;
     int Bid = 1;
-    int Life = 10;
+    int Life = 5;
+
+    int cardPosX = 650, cardPosY = 775;
 
     void Pass(bool& WHOMOVE, int& CounterPass);
-
 public:
     YourPlayer();
     YourPlayer(const Card& FirstCard, const Card& SecondCard);
@@ -47,7 +48,7 @@ public:
 
     void SetLife(int newLife);
 
-    void SetBid(int newBid);
+    //void SetBid(int newBid);
 
     void SetCardSum(int newCardSum);
 
@@ -59,10 +60,11 @@ private:
     std::vector<Card> Array_of_cards;
     int CardSum = 0;
     int Bid = 1;
-    int Life = 10;
+    int Life = 5;
+
+    int cardPosX = 800, cardPosY = 300;
 
     void Pass(bool& WHOMOVE, int& CounterPass);
-
 public:
     EnemyPlayer();
     EnemyPlayer(const Card& FirstCard, const Card& SecondCard);
@@ -81,9 +83,11 @@ public:
 
     void SetLife(int newLife);
 
-    void SetBid(int newBid);
+    //void SetBid(int newBid);
 
     void SetCardSum(int newCardSum);
 
     void ClearArray();
+
+    void ChangeFirstCardTexture(sf::Texture newTexture);
 };

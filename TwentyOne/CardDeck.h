@@ -3,10 +3,10 @@
 class Card {
 private:
     int number;
-    sf::Sprite spriteCard;
     sf::Texture textureCard;
+    sf::Sprite spriteCard;
 public:
-    Card(int value, sf::Texture texture_card);
+    Card(int value, sf::Texture& texture_card);
 
     Card(const Card& copy);
 
@@ -15,6 +15,10 @@ public:
     void Show(sf::RenderWindow& window);
 
     void setTextureCardPosition(int posX, int posY);
+
+    void setScale(int x, int y);
+
+    void changeTexture(sf::Texture newTexture);
 };
 
 class CardDeck {
