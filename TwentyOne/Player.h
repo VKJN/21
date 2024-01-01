@@ -5,7 +5,8 @@ class Player {
 public:
     virtual void TakeCard(const Card& NewCard, int& winningNumber) = 0;
     virtual void Pass(bool& WHOMOVE, int& CounterPass) = 0;
-    virtual void Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& MaxCards, int& winningNumber) = 0;
+    virtual void Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& MaxCards, int& winningNumber, 
+        sf::RenderWindow& window, sf::RectangleShape& background, sf::Event& event) = 0;
 
     virtual void showCards(sf::RenderWindow& window) = 0;
 
@@ -36,7 +37,8 @@ public:
 
     void TakeCard(const Card& NewCard, int& winningNumber);
 
-    void Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& MaxCards, int& winningNumber);
+    void Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& MaxCards, int& winningNumber, 
+        sf::RenderWindow& window, sf::RectangleShape& background, sf::Event& event);
 
     void showCards(sf::RenderWindow& window);
 
@@ -71,7 +73,8 @@ public:
 
     void TakeCard(const Card& NewCard, int& winningNumber);
 
-    void Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& MaxCards, int& winningNumber);
+    void Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& MaxCards, int& winningNumber, 
+        sf::RenderWindow& window, sf::RectangleShape& background, sf::Event& event);
 
     void showCards(sf::RenderWindow& window);
 

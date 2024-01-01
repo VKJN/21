@@ -1,7 +1,8 @@
 #include "Header.h"
 #include "Game.h"
 
-Game::Game(YourPlayer& player, EnemyPlayer& enemy, CardDeck& deck, int MaxCards) {
+Game::Game(YourPlayer& player, EnemyPlayer& enemy, CardDeck& deck, int MaxCards, 
+    sf::RenderWindow& window, sf::Event& event, sf::RectangleShape& background) {
     this->enemy = enemy;
     this->player = player;
     this->deck = deck;
@@ -10,19 +11,23 @@ Game::Game(YourPlayer& player, EnemyPlayer& enemy, CardDeck& deck, int MaxCards)
     this->MaxCards = MaxCards;
     this->winningNumber = 21;
 
+    this->window.create(window.getSystemHandle());
+    this->event = event;
+    this->background = background;
+
     if (!font.loadFromFile("fonts/ariali.ttf")) {
         // error...
     }
     text.setFont(font);
 }
 
-void Game::Play(sf::RenderWindow& window) {
+void Game::Play() {
     do {
-        Round(window);
+        Round();
         RoundResult(CheckWinner());
         RestartRound();
     } while (player.GetLife() > 0 || enemy.GetLife() > 0);
-
+   
     if (player.GetLife() <= 0) {
         std::cout << "You lose in game";
     }
@@ -31,29 +36,24 @@ void Game::Play(sf::RenderWindow& window) {
     }
 }
 
-void Game::Round(sf::RenderWindow& window) {
+void Game::Round() {
     std::cout << "New round" << std::endl;
     //AddText("New round", sf::Color::White, 30, window);             // Сделать, чтобы текст был на экране только 2 секунды
     //window.draw(text);
     //window.display();
-
     //std::this_thread::sleep_for(std::chrono::seconds(2));
     
-    WHOMOVE = random(0, 1);
+    WHOMOVE = /*random(0, 1)*/ true;
     do {
-        enemy.showCards(window);
         std::cout << "Enemy card sum: " << enemy.GetCardSum() << "/" << winningNumber << "\n\n";
-
-        player.showCards(window);
         std::cout << "Your card sum: " << player.GetCardSum() << "/" << winningNumber << "\n\n";
-
-        std::cout << "CounterPass: " << CounterPass << "\n\n\n";
+        std::cout << "CounterPass: " << CounterPass << "\n\n";
 
         if (WHOMOVE) {
-            player.Move(deck, WHOMOVE, CounterPass, MaxCards, winningNumber);
+            player.Move(deck, WHOMOVE, CounterPass, MaxCards, winningNumber, window, background, event);
         }
         else {
-            enemy.Move(deck, WHOMOVE, CounterPass, MaxCards, winningNumber);
+            enemy.Move(deck, WHOMOVE, CounterPass, MaxCards, winningNumber, window, background, event);
         }
     } while (CounterPass < 2);
 }
@@ -126,7 +126,7 @@ void Game::RestartRound() {
     }
 }
 
-void Game::AddText(std::string newText, sf::Color newColor, int size, sf::RenderWindow& window) {
+void Game::AddText(std::string newText, sf::Color newColor, int size) {
     text = sf::Text(newText, font, size);
     text.setFillColor(newColor);
     text.setPosition((window.getSize().x - text.getLocalBounds().width) / 2,

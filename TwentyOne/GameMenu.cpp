@@ -60,6 +60,9 @@ void GameMenu::GamePlayMenu(sf::RenderWindow& window, sf::RectangleShape& backgr
 		draw(window);
 		window.display();
 	}
+	window.clear();
+	window.draw(background);
+	window.display();
 }
 
 void GameMenu::handleEvent(sf::RenderWindow& window, sf::Event& event, sf::RectangleShape& background, bool& resultMenu) {
@@ -85,7 +88,8 @@ void GameMenu::handleEvent(sf::RenderWindow& window, sf::Event& event, sf::Recta
 	}
 }
 
-void GameMenu::handleMouseClick(sf::RenderWindow& window, sf::Event& event, sf::RectangleShape& background, bool& resultMenu, const sf::Vector2i& mousePosition) {
+void GameMenu::handleMouseClick(sf::RenderWindow& window, sf::Event& event, sf::RectangleShape& background, 
+	bool& resultMenu, const sf::Vector2i& mousePosition) {
 	for (int i = 0; i < mainMenu.size(); i++) {
 		if (mainMenu[i].getGlobalBounds().contains(float(mousePosition.x), float(mousePosition.y))) {
 			switch (i) {

@@ -70,7 +70,6 @@ int main()
 
     int MaxCards = 11;
 
-    bool shouldRunGamePlayMenu = true;
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -81,23 +80,16 @@ int main()
                 window.close();
             }
 
-            if (shouldRunGamePlayMenu) {
-                Menu.GamePlayMenu(window, background, titul, event);
-                shouldRunGamePlayMenu = false;
+            Menu.GamePlayMenu(window, background, titul, event);
 
-                window.clear();
-                window.draw(background);
-                window.display();
+            CardDeck deck;
+            AddInDeck(deck, MaxCards);
 
-                CardDeck deck;
-                AddInDeck(deck, MaxCards);
+            YourPlayer player(deck.RemoveCard(random(1, MaxCards), MaxCards), deck.RemoveCard(random(1, MaxCards), MaxCards));
+            EnemyPlayer enemy(deck.RemoveCard(random(1, MaxCards), MaxCards), deck.RemoveCard(random(1, MaxCards), MaxCards));
 
-                YourPlayer player(deck.RemoveCard(random(1, MaxCards), MaxCards), deck.RemoveCard(random(1, MaxCards), MaxCards));
-                EnemyPlayer enemy(deck.RemoveCard(random(1, MaxCards), MaxCards), deck.RemoveCard(random(1, MaxCards), MaxCards));
-
-                Game game21(player, enemy, deck, MaxCards);
-                game21.Play(window);
-            }
+            Game game21(player, enemy, deck, MaxCards, window, event, background);
+            game21.Play();
 
             //Потом сделать Do While
             //game21.Play();

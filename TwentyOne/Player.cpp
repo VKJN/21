@@ -32,24 +32,34 @@ void YourPlayer::Pass(bool& WHOMOVE, int& CounterPass) {
 
 
 // Ход игрока, так как в нем вызываются Pass и TakeCard, нужно передать для них соответствующие параметры
-void YourPlayer::Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& MaxCards, int& winningNumber) {
-    std::cout << "Your move: " << std::endl;
-    int key;
-    key = _getch();
-    switch (key) {
-    case 2:
-        try {
-            TakeCard(Deck.RemoveCard(random(1, Deck.GetCardCounter()), MaxCards), winningNumber);
-            CounterPass = 0;
-            WHOMOVE = !WHOMOVE;
+void YourPlayer::Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& MaxCards, int& winningNumber,
+    sf::RenderWindow& window, sf::RectangleShape& background, sf::Event& event) {
+
+    std::cout << "Your move: " << "\n\n\n";
+    bool result = false;
+
+    while (!result) {
+        while (window.pollEvent(event)) {
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)) {
+                try {
+                    TakeCard(Deck.RemoveCard(random(1, Deck.GetCardCounter()), MaxCards), winningNumber);
+                    CounterPass = 0;
+                    WHOMOVE = !WHOMOVE;
+                    result = true;
+                }
+                catch (const char* error_message) {
+                    std::cout << error_message << std::endl;
+                }
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3)) {
+                Pass(WHOMOVE, CounterPass);
+                result = true;
+            }
         }
-        catch (const char* error_message) {
-            std::cout << error_message << std::endl;
-        }
-        break;
-    case 3:
-        Pass(WHOMOVE, CounterPass);
-        break;
+        window.clear();
+        window.draw(background);
+        showCards(window);
+        window.display();
     }
 }
 
@@ -114,7 +124,8 @@ void EnemyPlayer::Pass(bool& WHOMOVE, int& CounterPass) {
     CounterPass++;
 }
 
-void EnemyPlayer::Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& MaxCards, int& winningNumber) {
+void EnemyPlayer::Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& MaxCards, int& winningNumber, 
+    sf::RenderWindow& window, sf::RectangleShape& background, sf::Event& event) {
     if (CardSum < 17) {
         TakeCard(Deck.RemoveCard(random(1, Deck.GetCardCounter()), MaxCards), winningNumber);
         CounterPass = 0;

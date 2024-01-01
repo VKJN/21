@@ -24,7 +24,8 @@ private:
 
 	void handleEvent(sf::RenderWindow& window, sf::Event& event, sf::RectangleShape& background, bool& resultMenu);
 
-	void handleMouseClick(sf::RenderWindow& window, sf::Event& event, sf::RectangleShape& background, bool& resultMenu, const sf::Vector2i& mousePosition);
+	void handleMouseClick(sf::RenderWindow& window, sf::Event& event, sf::RectangleShape& background, 
+		bool& resultMenu, const sf::Vector2i& mousePosition);
 public:
 	GameMenu(float menux, float menuy, int sizeFont, int step, std::vector<std::string>& name);
 

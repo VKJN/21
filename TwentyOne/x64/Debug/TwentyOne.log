@@ -1,19 +1,10 @@
-﻿  GameMenu.cpp
-d:\projects\21\twentyone\config.h(6): warning C4244: инициализация: преобразование "unsigned int" в "float", возможна потеря данных
-d:\projects\21\twentyone\config.h(6): warning C4244: инициализация: преобразование "unsigned int" в "const float", возможна потеря данных
-d:\projects\21\twentyone\config.h(7): warning C4244: инициализация: преобразование "unsigned int" в "float", возможна потеря данных
-d:\projects\21\twentyone\config.h(7): warning C4244: инициализация: преобразование "unsigned int" в "const float", возможна потеря данных
-d:\projects\21\twentyone\gamemenu.cpp(31): warning C4244: инициализация: преобразование "float" в "int", возможна потеря данных
-d:\projects\21\twentyone\gamemenu.cpp(32): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
-d:\projects\21\twentyone\gamemenu.cpp(115): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+﻿  Game.cpp
   Player.cpp
   TwentyOne.cpp
-d:\projects\21\twentyone\config.h(6): warning C4244: инициализация: преобразование "unsigned int" в "float", возможна потеря данных
-d:\projects\21\twentyone\config.h(6): warning C4244: инициализация: преобразование "unsigned int" в "const float", возможна потеря данных
-d:\projects\21\twentyone\config.h(7): warning C4244: инициализация: преобразование "unsigned int" в "float", возможна потеря данных
-d:\projects\21\twentyone\config.h(7): warning C4244: инициализация: преобразование "unsigned int" в "const float", возможна потеря данных
+d:\projects\21\twentyone\config.h(4): warning C4244: инициализация: преобразование "unsigned int" в "float", возможна потеря данных
+d:\projects\21\twentyone\config.h(4): warning C4244: инициализация: преобразование "unsigned int" в "const float", возможна потеря данных
+d:\projects\21\twentyone\config.h(5): warning C4244: инициализация: преобразование "unsigned int" в "float", возможна потеря данных
+d:\projects\21\twentyone\config.h(5): warning C4244: инициализация: преобразование "unsigned int" в "const float", возможна потеря данных
 d:\projects\21\twentyone\twentyone.cpp(40): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
   Создание кода...
-  LINK : эх эрщфхэ шыш эх т√яюыэхэр ёсюЁър D:\Projects\21\TwentyOne\x64\Debug\TwentyOne.exe яЁш яюёыхфэхщ шэъЁхьхэЄэющ ъюьяюэютъх; т√яюыэ хЄё  яюыэр  ъюьяюэютър
-TwentyOne.obj : error LNK2005: "class sf::Event event" (?event@@3VEvent@sf@@A) єцх юяЁхфхыхэ т GameMenu.obj
-D:\Projects\21\TwentyOne\x64\Debug\TwentyOne.exe : fatal error LNK1169: юсэрЁєцхэ ьэюуюъЁрЄэю юяЁхфхыхээ√щ ёшьтюы - юфшэ шыш сюыхх
+  TwentyOne.vcxproj -> D:\Projects\21\TwentyOne\x64\Debug\TwentyOne.exe

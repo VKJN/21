@@ -4,6 +4,10 @@
 
 class Game {
 private:
+    sf::RenderWindow window;
+    sf::Event event;
+    sf::RectangleShape background;
+
     YourPlayer player;
     EnemyPlayer enemy;
     CardDeck deck;
@@ -17,7 +21,7 @@ private:
     sf::Text text;
     int textPosX, textPosY;
 
-    void Round(sf::RenderWindow& window);
+    void Round();
 
     int CheckWinner();
 
@@ -25,9 +29,10 @@ private:
 
     void RestartRound();
 
-    void AddText(std::string newText, sf::Color newColor, int size, sf::RenderWindow& window);
+    void AddText(std::string newText, sf::Color newColor, int size);
 public:
-    Game(YourPlayer& player, EnemyPlayer& enemy, CardDeck& deck, int MaxCards);
+    Game(YourPlayer& player, EnemyPlayer& enemy, CardDeck& deck, int MaxCards, 
+        sf::RenderWindow& window, sf::Event& event, sf::RectangleShape& background);
 
-    void Play(sf::RenderWindow& window);
+    void Play();
 };
