@@ -68,7 +68,7 @@ int main()
     Menu.setColorTextMenu(menuTextColor);
     Menu.AlignMenu();
 
-    int MaxCards = 11;
+    int CardsInDeck = 11;
 
     while (window.isOpen()) {
         sf::Event event;
@@ -83,29 +83,23 @@ int main()
             Menu.GamePlayMenu(window, background, titul, event);
 
             CardDeck deck;
-            AddInDeck(deck, MaxCards);
+            AddInDeck(deck, CardsInDeck);
 
-            YourPlayer player(deck.RemoveCard(random(1, MaxCards), MaxCards), deck.RemoveCard(random(1, MaxCards), MaxCards));
-            EnemyPlayer enemy(deck.RemoveCard(random(1, MaxCards), MaxCards), deck.RemoveCard(random(1, MaxCards), MaxCards));
+            YourPlayer player(deck.RemoveCard(random(1, CardsInDeck), CardsInDeck), deck.RemoveCard(random(1, CardsInDeck), CardsInDeck));
+            EnemyPlayer enemy(deck.RemoveCard(random(1, CardsInDeck), CardsInDeck), deck.RemoveCard(random(1, CardsInDeck), CardsInDeck));
 
-            Game game21(player, enemy, deck, MaxCards, window, event, background);
+            Game game21(player, enemy, deck, CardsInDeck, window, event, background);
             game21.Play();
 
-            //Потом сделать Do While
-            //game21.Play();
-            
+            /*do {
+                game21.Play();
+
+            } while (true);*/ 
         }
         /*window.clear();
         window.draw(background);
         window.draw(titul);
         window.display();*/
-
-        window.clear();
-        window.draw(background);
-        //player.showCards(window);
-        //enemy.showCards(window);
-        //deck.show(window);
-        window.display();
     }
    
     /*for (int i = 0;; ++i) {      Для проверки, какая клавиша под каким номером

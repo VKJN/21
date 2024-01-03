@@ -24,19 +24,16 @@ public:
 class CardDeck {
 private:
     std::vector<Card> deck;
-    int CardCounter = 0;
 public:
     void AddCard(const Card& NewCardInDeck);
 
-    Card RemoveCard(int index, int& MaxCards);
+    Card RemoveCard(int index, int& CardsInDeck);
 
     int GetCardCounter();
-
-    void SetCardCounter(int newCardCounter);
 
     void ClearDeck();
 
     void show(sf::RenderWindow& window);
 };
 
-void AddInDeck(CardDeck& deck, int& MaxCards);
+void AddInDeck(CardDeck& deck, int& CardsInDeck);

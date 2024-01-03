@@ -1,14 +1,14 @@
 #include "Header.h"
 #include "Game.h"
 
-Game::Game(YourPlayer& player, EnemyPlayer& enemy, CardDeck& deck, int MaxCards, 
+Game::Game(YourPlayer& player, EnemyPlayer& enemy, CardDeck& deck, int CardsInDeck,
     sf::RenderWindow& window, sf::Event& event, sf::RectangleShape& background) {
     this->enemy = enemy;
     this->player = player;
     this->deck = deck;
 
     this->CounterPass = 0;
-    this->MaxCards = MaxCards;
+    this->CardsInDeck = CardsInDeck;
     this->winningNumber = 21;
 
     this->window.create(window.getSystemHandle());
@@ -25,8 +25,11 @@ void Game::Play() {
     do {
         Round();
         RoundResult(CheckWinner());
-        RestartRound();
-    } while (player.GetLife() > 0 || enemy.GetLife() > 0);
+        if (player.GetLife() > 0 || enemy.GetLife() > 0) {
+            RestartRound();
+        }
+        show();
+    } while (player.GetLife() > 0 && enemy.GetLife() > 0);
    
     if (player.GetLife() <= 0) {
         std::cout << "You lose in game";
@@ -43,19 +46,37 @@ void Game::Round() {
     //window.display();
     //std::this_thread::sleep_for(std::chrono::seconds(2));
     
-    WHOMOVE = /*random(0, 1)*/ true;
+    WHOMOVE = random(0, 1);
     do {
-        std::cout << "Enemy card sum: " << enemy.GetCardSum() << "/" << winningNumber << "\n\n";
-        std::cout << "Your card sum: " << player.GetCardSum() << "/" << winningNumber << "\n\n";
-        std::cout << "CounterPass: " << CounterPass << "\n\n";
+        std::cout << "Enemy card sum: " << enemy.GetCardSum() << "/" << winningNumber << "\n";
+        std::cout << "Your card sum: " << player.GetCardSum() << "/" << winningNumber << "\n";
+        std::cout << "CounterPass: " << CounterPass << "\n\n\n";
+
+        show();
 
         if (WHOMOVE) {
-            player.Move(deck, WHOMOVE, CounterPass, MaxCards, winningNumber, window, background, event);
+            player.Move(deck, WHOMOVE, CounterPass, CardsInDeck, winningNumber, window);
         }
         else {
-            enemy.Move(deck, WHOMOVE, CounterPass, MaxCards, winningNumber, window, background, event);
+            enemy.Move(deck, WHOMOVE, CounterPass, CardsInDeck, winningNumber, window);
         }
+
+        show();
+
     } while (CounterPass < 2);
+}
+
+void Game::show() {
+    window.clear();
+    window.draw(background);
+
+    player.showCards(window);
+    player.showLifes(window);
+
+    enemy.showCards(window);
+    enemy.showLifes(window);
+
+    window.display();
 }
 
 int Game::CheckWinner() {
@@ -77,7 +98,13 @@ int Game::CheckWinner() {
     else if ((playerSum < winningNumber) && (enemySum < winningNumber)) {
         return (playerSum > enemySum) ? 2 : 3;
     }
-    else if ((playerSum <= winningNumber) && (enemySum > winningNumber)) {
+    else if ((playerSum < winningNumber) && (enemySum > winningNumber)) {
+        return 2;
+    }
+    else if ((playerSum > winningNumber) && (enemySum < winningNumber)) {
+        return 3;
+    }
+    else if (playerSum == winningNumber && enemySum != winningNumber) {
         return 2;
     }
     else {
@@ -86,18 +113,28 @@ int Game::CheckWinner() {
 }
 
 void Game::RoundResult(int result) {
+
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+
     if (result == 1) {
+        player.ChangeLifeTexture();
+        enemy.ChangeLifeTexture();
+
         player.SetLife(player.GetLife() - player.GetBid());
         enemy.SetLife(enemy.GetLife() - enemy.GetBid());
         std::cout << "Draw" << std::endl;
     }
 
     else if (result == 2) {
+        enemy.ChangeLifeTexture();
+
         enemy.SetLife(enemy.GetLife() - enemy.GetBid());
         std::cout << "You win" << std::endl;
     }
 
     else {
+        player.ChangeLifeTexture();
+
         player.SetLife(player.GetLife() - player.GetBid());
         std::cout << "You lose" << std::endl;
     }
@@ -115,14 +152,13 @@ void Game::RestartRound() {
 
     player.SetCardSum(0);
     enemy.SetCardSum(0);
-    deck.SetCardCounter(0);
 
-    MaxCards = 11;
+    CardsInDeck = 11;
 
-    AddInDeck(deck, MaxCards);
+    AddInDeck(deck, CardsInDeck);
     for (int i = 0; i < 2; i++) {
-        player.TakeCard(deck.RemoveCard(random(1, deck.GetCardCounter()), MaxCards), winningNumber);
-        enemy.TakeCard(deck.RemoveCard(random(1, deck.GetCardCounter()), MaxCards), winningNumber);
+        player.TakeCard(deck.RemoveCard(random(1, deck.GetCardCounter()), CardsInDeck));
+        enemy.TakeCard(deck.RemoveCard(random(1, deck.GetCardCounter()), CardsInDeck));
     }
 }
 

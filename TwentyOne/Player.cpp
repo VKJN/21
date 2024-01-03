@@ -9,18 +9,14 @@ YourPlayer::YourPlayer(const Card& FirstCard, const Card& SecondCard) {
     Array_of_cards.push_back(SecondCard);
 
     CardSum += FirstCard.GetNumber() + SecondCard.GetNumber();
+
+    lifeSpriteSetup();
 }
 
 // ћетод дл€ добавлени€ в руки карты, пока сумма номеров карт не выше выйгрышного числа
-void YourPlayer::TakeCard(const Card& NewCard, int& winningNumber) {
-    if (CardSum < winningNumber) {
-        Array_of_cards.push_back(NewCard);
-
-        CardSum += NewCard.GetNumber();
-    }
-    else {
-        throw "You canТt take the card while you have too much";
-    }
+void YourPlayer::TakeCard(const Card& NewCard) {
+    Array_of_cards.push_back(NewCard);
+    CardSum += NewCard.GetNumber();
 }
 
 
@@ -32,36 +28,40 @@ void YourPlayer::Pass(bool& WHOMOVE, int& CounterPass) {
 
 
 // ’од игрока, так как в нем вызываютс€ Pass и TakeCard, нужно передать дл€ них соответствующие параметры
-void YourPlayer::Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& MaxCards, int& winningNumber,
-    sf::RenderWindow& window, sf::RectangleShape& background, sf::Event& event) {
+void YourPlayer::Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& CardsInDeck, int& winningNumber,
+    sf::RenderWindow& window) {
 
-    std::cout << "Your move: " << "\n\n\n";
+    std::cout << "Your move: " << "\n";
     bool result = false;
 
     while (!result) {
-        while (window.pollEvent(event)) {
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)) {
-                try {
-                    TakeCard(Deck.RemoveCard(random(1, Deck.GetCardCounter()), MaxCards), winningNumber);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)) {
+            try {
+                if (CardSum <= winningNumber) {
+                    TakeCard(Deck.RemoveCard(random(1, Deck.GetCardCounter()), CardsInDeck));
                     CounterPass = 0;
                     WHOMOVE = !WHOMOVE;
                     result = true;
                 }
-                catch (const char* error_message) {
-                    std::cout << error_message << std::endl;
+                else {
+                    throw "You canТt take the card while you have too much";
                 }
             }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3)) {
-                Pass(WHOMOVE, CounterPass);
-                result = true;
+            catch (const char* error_message) {
+                std::cout << error_message << std::endl;
             }
         }
-        window.clear();
-        window.draw(background);
-        showCards(window);
-        window.display();
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3)) {
+            Pass(WHOMOVE, CounterPass);
+            result = true;
+        }
+        /*if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+            window.close();
+            std::exit(0);
+        }*/
     }
 }
+
 
 void YourPlayer::showCards(sf::RenderWindow& window) {
     for (auto i : Array_of_cards) {
@@ -70,6 +70,12 @@ void YourPlayer::showCards(sf::RenderWindow& window) {
         cardPosX += 170;
     }
     cardPosX = 650;
+}
+
+void YourPlayer::showLifes(sf::RenderWindow& window) {
+    for (auto i : Array_of_Lifes) {
+        window.draw(i);
+    }
 }
 
 int YourPlayer::GetCardSum() {
@@ -100,6 +106,23 @@ void YourPlayer::ClearArray() {
     Array_of_cards.clear();
 }
 
+void YourPlayer::ChangeLifeTexture() {
+    if (!newLifeTexture.loadFromFile("image/empty life.png")) {}
+    Array_of_Lifes[5 - Life].setTexture(newLifeTexture);
+}
+
+void YourPlayer::lifeSpriteSetup() {
+    if (!textureLife.loadFromFile("image/full life.png")) {}
+
+    sf::Sprite spriteLife;
+    spriteLife.setTexture(textureLife);
+
+    for (int i = 0, posX = 80, posY = 650; i < 5; i++, posY += 60) {
+        spriteLife.setPosition(posX, posY);
+        Array_of_Lifes.push_back(spriteLife);
+    }
+}
+
 // ћетоды класса EnemyPlayer
 
 EnemyPlayer::EnemyPlayer() {}
@@ -109,14 +132,18 @@ EnemyPlayer::EnemyPlayer(const Card& FirstCard, const Card& SecondCard) {
 
     CardSum += FirstCard.GetNumber() + SecondCard.GetNumber();
 
-    sf::Texture newCardTexture;
-    newCardTexture.loadFromFile("image/back of the card.jpg");
-    ChangeFirstCardTexture(newCardTexture);
+    ChangeFirstCardTexture();
+
+    lifeSpriteSetup();
 }
 
-void EnemyPlayer::TakeCard(const Card& NewCard, int& winningNumber) {
+void EnemyPlayer::TakeCard(const Card& NewCard) {
     Array_of_cards.push_back(NewCard);
     CardSum += NewCard.GetNumber();
+
+    if (Array_of_cards.size() == 1) {
+        ChangeFirstCardTexture();
+    }
 }
 
 void EnemyPlayer::Pass(bool& WHOMOVE, int& CounterPass) {
@@ -124,10 +151,14 @@ void EnemyPlayer::Pass(bool& WHOMOVE, int& CounterPass) {
     CounterPass++;
 }
 
-void EnemyPlayer::Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& MaxCards, int& winningNumber, 
-    sf::RenderWindow& window, sf::RectangleShape& background, sf::Event& event) {
+void EnemyPlayer::Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& CardsInDeck, int& winningNumber,
+    sf::RenderWindow& window) {
+
+    std::cout << "Enemy move: " << "\n";
+    std::this_thread::sleep_for(std::chrono::seconds(random(2, 4)));
+
     if (CardSum < 17) {
-        TakeCard(Deck.RemoveCard(random(1, Deck.GetCardCounter()), MaxCards), winningNumber);
+        TakeCard(Deck.RemoveCard(random(1, Deck.GetCardCounter()), CardsInDeck));
         CounterPass = 0;
         WHOMOVE = !WHOMOVE;
     }
@@ -144,6 +175,12 @@ void EnemyPlayer::showCards(sf::RenderWindow& window) {
         cardPosX += 170;
     }
     cardPosX = 800;
+}
+
+void EnemyPlayer::showLifes(sf::RenderWindow& window) {
+    for (auto i : Array_of_Lifes) {
+        window.draw(i);
+    }
 }
 
 int EnemyPlayer::GetCardSum() {
@@ -174,6 +211,26 @@ void EnemyPlayer::ClearArray() {
     Array_of_cards.clear();
 }
 
-void EnemyPlayer::ChangeFirstCardTexture(sf::Texture newTexture) {
+void EnemyPlayer::ChangeFirstCardTexture() {
+    sf::Texture newTexture;
+    if (!newTexture.loadFromFile("image/back of the card.jpg")) {}
+
     Array_of_cards[0].changeTexture(newTexture);
+}
+
+void EnemyPlayer::ChangeLifeTexture() {
+    if (!newLifeTexture.loadFromFile("image/empty life.png")) {}
+    Array_of_Lifes[5 - Life].setTexture(newLifeTexture);
+}
+
+void EnemyPlayer::lifeSpriteSetup() {
+    if (!textureLife.loadFromFile("image/full life.png")) {}
+
+    sf::Sprite spriteLife;
+    spriteLife.setTexture(textureLife);
+
+    for (int i = 0, posX = 80, posY = 80; i < 5; i++, posY += 60) {
+        spriteLife.setPosition(posX, posY);
+        Array_of_Lifes.push_back(spriteLife);
+    }
 }

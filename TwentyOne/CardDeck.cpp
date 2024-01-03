@@ -40,30 +40,24 @@ void Card::changeTexture(sf::Texture newTexture) {
 
 void CardDeck::AddCard(const Card& NewCardInDeck) {
     deck.push_back(NewCardInDeck);
-    CardCounter++;
 }
 
-Card CardDeck::RemoveCard(int index, int& MaxCards) {
+Card CardDeck::RemoveCard(int index, int& CardsInDeck) {
     index--; // -1, because we started counting from 1
     Card CopyCard = deck[index];
     deck.erase(deck.begin() + index);
 
-    MaxCards--;
-    CardCounter--;
+    CardsInDeck--;
     return CopyCard;
 }
 
 int CardDeck::GetCardCounter() {
     if (deck.size() > 0) {
-        return CardCounter;
+        return deck.size();
     }
     else {
         throw "Deck of cards is empty";
     }
-}
-
-void CardDeck::SetCardCounter(int newCardCounter) {
-    this->CardCounter = newCardCounter;
 }
 
 void CardDeck::ClearDeck() {
@@ -80,9 +74,9 @@ void CardDeck::show(sf::RenderWindow& window) {
 }
 
 // Просто функция по заполнению колоды
-void AddInDeck(CardDeck& deck, int& MaxCards) {
+void AddInDeck(CardDeck& deck, int& CardsInDeck) {
     sf::Texture texture_card;
-    for (int i = 1; i < MaxCards + 1; i++) {
+    for (int i = 1; i < CardsInDeck + 1; i++) {
         std::string cardTexturePath = "image/" + std::to_string(i) + ".jpg";
 
         if (!texture_card.loadFromFile(cardTexturePath)) {

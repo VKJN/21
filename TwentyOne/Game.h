@@ -14,7 +14,7 @@ private:
 
     bool WHOMOVE; // true - your move, false - enemy move
     int CounterPass; // if 2 - opening of closed cards
-    int MaxCards;
+    int CardsInDeck;
     int winningNumber;
 
     sf::Font font;
@@ -30,8 +30,10 @@ private:
     void RestartRound();
 
     void AddText(std::string newText, sf::Color newColor, int size);
+
+    void show();
 public:
-    Game(YourPlayer& player, EnemyPlayer& enemy, CardDeck& deck, int MaxCards, 
+    Game(YourPlayer& player, EnemyPlayer& enemy, CardDeck& deck, int CardsInDeck,
         sf::RenderWindow& window, sf::Event& event, sf::RectangleShape& background);
 
     void Play();
