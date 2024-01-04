@@ -27,6 +27,7 @@ void Card::setTextureCardPosition(int posX, int posY) {
     spriteCard.setPosition(posX, posY);
 }
 
+// Метод, используемый enemy, чтобы его карты были перевернуты
 void Card::setScale(int x,int y) {
     spriteCard.setScale(x, y);
 }
@@ -43,7 +44,7 @@ void CardDeck::AddCard(const Card& NewCardInDeck) {
 }
 
 Card CardDeck::RemoveCard(int index, int& CardsInDeck) {
-    index--; // -1, because we started counting from 1
+    index--; // -1, потому что мы начинаем считать с 1
     Card CopyCard = deck[index];
     deck.erase(deck.begin() + index);
 

@@ -42,8 +42,8 @@ int main()
 
     // Установка фона, шрифта, текста, подготовка меню
 
-    //sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Twenty One", sf::Style::Fullscreen);
-    sf::RenderWindow window(sf::VideoMode(1800, 1000), "Twenty One");
+    sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Twenty One", sf::Style::Fullscreen);
+    //sf::RenderWindow window(sf::VideoMode(1800, 1000), "Twenty One");
 
     sf::RectangleShape background(sf::Vector2f(WIDTH, HEIGHT));
 
@@ -80,7 +80,7 @@ int main()
                 window.close();
             }
 
-            Menu.GamePlayMenu(window, background, titul, event);
+            Menu.GamePlayMenu(window, background, titul, event); // Меню игры
 
             CardDeck deck;
             AddInDeck(deck, CardsInDeck);
@@ -89,35 +89,32 @@ int main()
             EnemyPlayer enemy(deck.RemoveCard(random(1, CardsInDeck), CardsInDeck), deck.RemoveCard(random(1, CardsInDeck), CardsInDeck));
 
             Game game21(player, enemy, deck, CardsInDeck, window, event, background);
-            game21.Play();
+            game21.Play(); // Сама игра
+
+
+
+            // Сделать: закрытую карту игрока (Но под картой должен отображаться ее номер), 
+            // показ суммы карт (у противника - ? + CardSum - Array_of_Cards[0] / winningNumber; у игрока - CardSum / winningNumber)
+
 
             /*do {
                 game21.Play();
-
-            } while (true);*/ 
+                sf::Text TextAfterTheGame;
+                TextAfterTheGame.setFont(menuFont);
+                initText(TextAfterTheGame, (WIDTH - TextAfterTheGame.getLocalBounds().width) / 3,
+                    (HEIGHT - TextAfterTheGame.getLocalBounds().height) / 3, "Do you want to play again?", 100, menuTextColor);
+            } while (true);*/
         }
-        /*window.clear();
+        window.clear();
         window.draw(background);
         window.draw(titul);
-        window.display();*/
+        window.display();
     }
-   
     /*for (int i = 0;; ++i) {      Для проверки, какая клавиша под каким номером
         if (_kbhit()) {
             int key = _getch();
             cout << key << endl;
             if (key == 0x1B) break;
-        }
-    }*/
-
-    /*int SecondsPassed = 0;                            Подсчет времени
-    auto start = chrono::steady_clock::now();
-    while (bal <= 9) {
-        auto current_time = chrono::steady_clock::now();
-        if (current_time - start >= chrono::seconds(1)) {
-            system("cls");
-            start = current_time;
-            cout << "Time elapsed - " << ++SecondsPassed;
         }
     }*/
 }

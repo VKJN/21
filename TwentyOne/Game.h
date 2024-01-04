@@ -29,7 +29,7 @@ private:
 
     void RestartRound();
 
-    void AddText(std::string newText, sf::Color newColor, int size);
+    void AddText(std::string newText, sf::Color newColor, int thickness, int size);
 
     void show();
 public:

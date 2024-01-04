@@ -27,16 +27,16 @@ public:
 
 class YourPlayer : public Player {
 private:
-    std::vector<Card> Array_of_cards;
+    std::vector<Card> Array_of_cards;           //Векторы карт и жизней (спрайтов жизней)
     std::vector<sf::Sprite> Array_of_Lifes;
-    int CardSum = 0;
-    int Bid = 1;
-    int Life = 5;
+    int CardSum = 0; // Сумма карт
+    int Bid = 1; // Ставка (сколько будет отниматься жизней за проигрыш)
+    int Life = 5; // Кол-во жизней
 
-    sf::Texture newLifeTexture;
+    sf::Texture newLifeTexture;   //Текстуры для жизней (красное сердце и пустое)
     sf::Texture textureLife;
 
-    int cardPosX = 650, cardPosY = 775;
+    int cardPosX = 650, cardPosY = 775; // Позиция 1 карты
 
     void Pass(bool& WHOMOVE, int& CounterPass);
 
@@ -73,16 +73,18 @@ public:
 
 class EnemyPlayer : public Player {
 private:
-    std::vector<Card> Array_of_cards;
+    std::vector<Card> Array_of_cards;           //Векторы карт и жизней (спрайтов жизней)
     std::vector<sf::Sprite> Array_of_Lifes;
-    int CardSum = 0;
-    int Bid = 1;
-    int Life = 5;
+    int CardSum = 0; // Сумма карт
+    int Bid = 1; // Ставка (сколько будет отниматься жизней за проигрыш)
+    int Life = 5; // Кол-во жизней
 
-    sf::Texture newLifeTexture;
+    sf::Texture newLifeTexture;   //Текстуры для жизней (красное сердце и пустое)
     sf::Texture textureLife;
 
-    int cardPosX = 800, cardPosY = 300;
+    std::string pathFirstCardTexture; // Путь к текстуре первой карты (нужен, так как при игре карта закрыта, а потом нужно ее открыть)
+
+    int cardPosX = 800, cardPosY = 300; // Позиция 1 карты
 
     void Pass(bool& WHOMOVE, int& CounterPass);
 

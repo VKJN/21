@@ -1,7 +1,7 @@
 #include "Header.h"
 #include "Player.h"
 
-// Методы класса YourPlayer
+// МЕТОДЫ КЛАССA YourPlayer
 
 YourPlayer::YourPlayer() {}
 YourPlayer::YourPlayer(const Card& FirstCard, const Card& SecondCard) {
@@ -20,7 +20,7 @@ void YourPlayer::TakeCard(const Card& NewCard) {
 }
 
 
-// Метод для смены активного игрока и повышения счетчика пассов (при пасе)
+// Метод для смены активного игрока и повышения счетчика пассов (при пассе)
 void YourPlayer::Pass(bool& WHOMOVE, int& CounterPass) {
     WHOMOVE = !WHOMOVE;
     CounterPass++;
@@ -36,29 +36,24 @@ void YourPlayer::Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& Card
 
     while (!result) {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)) {
-            try {
-                if (CardSum <= winningNumber) {
-                    TakeCard(Deck.RemoveCard(random(1, Deck.GetCardCounter()), CardsInDeck));
-                    CounterPass = 0;
-                    WHOMOVE = !WHOMOVE;
-                    result = true;
-                }
-                else {
-                    throw "You can’t take the card while you have too much";
-                }
+            if (CardSum <= winningNumber) {
+                TakeCard(Deck.RemoveCard(random(1, Deck.GetCardCounter()), CardsInDeck));
+                CounterPass = 0;
+                WHOMOVE = !WHOMOVE;
+                result = true;
             }
-            catch (const char* error_message) {
-                std::cout << error_message << std::endl;
+            else {
+                throw "You cannot take the card while you have too much";
             }
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3)) {
             Pass(WHOMOVE, CounterPass);
             result = true;
         }
-        /*if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
             window.close();
             std::exit(0);
-        }*/
+        }
     }
 }
 
@@ -106,11 +101,15 @@ void YourPlayer::ClearArray() {
     Array_of_cards.clear();
 }
 
+
+// Смена текстуры жизни на пустую
 void YourPlayer::ChangeLifeTexture() {
     if (!newLifeTexture.loadFromFile("image/empty life.png")) {}
     Array_of_Lifes[5 - Life].setTexture(newLifeTexture);
 }
 
+
+// Метод для установки текстуры и спрайта жизней и добавление спрайта в вектор
 void YourPlayer::lifeSpriteSetup() {
     if (!textureLife.loadFromFile("image/full life.png")) {}
 
@@ -123,7 +122,8 @@ void YourPlayer::lifeSpriteSetup() {
     }
 }
 
-// Методы класса EnemyPlayer
+
+// МЕТОДЫ КЛАССA EnemyPlayer
 
 EnemyPlayer::EnemyPlayer() {}
 EnemyPlayer::EnemyPlayer(const Card& FirstCard, const Card& SecondCard) {
@@ -131,6 +131,8 @@ EnemyPlayer::EnemyPlayer(const Card& FirstCard, const Card& SecondCard) {
     Array_of_cards.push_back(SecondCard);
 
     CardSum += FirstCard.GetNumber() + SecondCard.GetNumber();
+
+    pathFirstCardTexture = "image/" + std::to_string(Array_of_cards[0].GetNumber()) + ".jpg";
 
     ChangeFirstCardTexture();
 
@@ -146,16 +148,20 @@ void EnemyPlayer::TakeCard(const Card& NewCard) {
     }
 }
 
+
+// Метод для смены активного игрока и повышения счетчика пассов (при пассе)
 void EnemyPlayer::Pass(bool& WHOMOVE, int& CounterPass) {
     WHOMOVE = !WHOMOVE;
     CounterPass++;
 }
 
+
+// Ход противника, так как в нем вызываются Pass и TakeCard, нужно передать для них соответствующие параметры
 void EnemyPlayer::Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& CardsInDeck, int& winningNumber,
     sf::RenderWindow& window) {
 
     std::cout << "Enemy move: " << "\n";
-    std::this_thread::sleep_for(std::chrono::seconds(random(2, 4)));
+    std::this_thread::sleep_for(std::chrono::seconds(random(1, 3)));
 
     if (CardSum < 17) {
         TakeCard(Deck.RemoveCard(random(1, Deck.GetCardCounter()), CardsInDeck));
@@ -166,6 +172,7 @@ void EnemyPlayer::Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& Car
         Pass(WHOMOVE, CounterPass);
     }
 }
+
 
 void EnemyPlayer::showCards(sf::RenderWindow& window) {
     for (auto i : Array_of_cards) {
@@ -213,16 +220,27 @@ void EnemyPlayer::ClearArray() {
 
 void EnemyPlayer::ChangeFirstCardTexture() {
     sf::Texture newTexture;
-    if (!newTexture.loadFromFile("image/back of the card.jpg")) {}
 
+    if (pathFirstCardTexture == "image/back of the card.jpg") {
+        pathFirstCardTexture = "image/" + std::to_string(Array_of_cards[0].GetNumber()) + ".jpg";
+        if (!newTexture.loadFromFile(pathFirstCardTexture)) {}
+    }
+    else {
+        pathFirstCardTexture = "image/back of the card.jpg";
+        if (!newTexture.loadFromFile(pathFirstCardTexture)) {}
+    }
     Array_of_cards[0].changeTexture(newTexture);
 }
 
+
+// Смена текстуры жизни на пустую
 void EnemyPlayer::ChangeLifeTexture() {
     if (!newLifeTexture.loadFromFile("image/empty life.png")) {}
     Array_of_Lifes[5 - Life].setTexture(newLifeTexture);
 }
 
+
+// Метод для установки текстуры и спрайта жизней и добавление спрайта в вектор
 void EnemyPlayer::lifeSpriteSetup() {
     if (!textureLife.loadFromFile("image/full life.png")) {}
 
