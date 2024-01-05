@@ -23,6 +23,7 @@ Game::Game(YourPlayer& player, EnemyPlayer& enemy, CardDeck& deck, int CardsInDe
 }
 
 void Game::Play() {
+    //window.setMouseCursorVisible(false);
     do {
         Round();
         RoundResult(CheckWinner());
@@ -32,20 +33,20 @@ void Game::Play() {
     } while (player.GetLife() > 0 && enemy.GetLife() > 0);
    
     if (player.GetLife() <= 0) {
-        AddText("You lose in game", menuTextColor, tricknessSize, 45);
+        SetText("You lose in game", menuTextColor, tricknessSize, 45, 0);
         show();
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
     else if (enemy.GetLife() <= 0) {
-        AddText("You win in game", menuTextColor, tricknessSize, 45); 
+        SetText("You win in game", menuTextColor, tricknessSize, 45, 0);
         show();
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 }
 
 void Game::Round() {
-    AddText("New round", menuTextColor, tricknessSize, 45);
+    SetText("New round", menuTextColor, tricknessSize, 45, 0);
 
     // Просто вызов New round и ожидание 2 секунды
     window.clear();
@@ -61,25 +62,25 @@ void Game::Round() {
         std::cout << "CounterPass: " << CounterPass << "\n\n\n";
 
         if (WHOMOVE) {
-            AddText("Your move", menuTextColor, tricknessSize, 45);
+            SetText("Your move", menuTextColor, tricknessSize, 45, 0);
             show();
             try {
                 player.Move(deck, WHOMOVE, CounterPass, CardsInDeck, winningNumber, window);
             }
-            catch (const char* error_message) {   // Вывод ошибки, что у вас перебор + ожидание 2 секунды, чтобы успели прочесть
-                AddText(error_message, menuTextColor, tricknessSize, 45);
+            catch (const char* error_message) {   // Вывод ошибки, что перебор + ожидание 2 секунды, чтобы прочесть
+                SetText(error_message, menuTextColor, tricknessSize, 45, 0);
                 show();
                 std::this_thread::sleep_for(std::chrono::seconds(2));
             }
         }
         else {
-            AddText("Enemy move", menuTextColor, tricknessSize, 45);
+            SetText("Enemy move", menuTextColor, tricknessSize, 45, 0);
             show();
 
             enemy.Move(deck, WHOMOVE, CounterPass, CardsInDeck, winningNumber, window);
         }
 
-        AddText("", menuTextColor, tricknessSize, 45);
+        SetText("", menuTextColor, tricknessSize, 45, 0);
         show();
 
     } while (CounterPass < 2);
@@ -97,7 +98,43 @@ void Game::show() {
 
     window.draw(text);
 
+    SetText("? + " + std::to_string(enemy.GetCardSum() - enemy.GetFirstCardNumber()) + " / " + std::to_string(winningNumber), sf::Color::White, 3, 30, 1);
+    window.draw(text);
+
+    SetText(std::to_string(player.GetCardSum()) + " / " + std::to_string(winningNumber), sf::Color::White, 3, 30, 2);
+    window.draw(text);
+
+    SetText(std::to_string(player.GetFirstCardNumber()), sf::Color::White, 3, 30, 3);
+    window.draw(text);
+
     window.display();
+}
+
+int Game::AfterThePlay() {
+    SetText("Do you want to play again? Y/N", menuTextColor, tricknessSize, 70, 0);
+    bool result = false;
+    while (!result) {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Y)) {
+            result = true;
+
+            player.SetLife(5);
+            player.ChangeLifeTexture(0);
+
+            enemy.SetLife(5);
+            player.ChangeLifeTexture(0);
+
+            RestartRound();
+            return 1;
+        }
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::N)) {
+            result = true;
+            return 0;
+        }
+        window.clear();
+        window.draw(background);
+        window.draw(text);
+        window.display();
+    }
 }
 
 int Game::CheckWinner() {
@@ -135,56 +172,55 @@ int Game::CheckWinner() {
 
 void Game::RoundResult(int result) {
 
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+
+    player.ChangeFirstCardTexture();
+    enemy.ChangeFirstCardTexture();
 
     if (result == 1) {
-        enemy.ChangeFirstCardTexture();
-
-        AddText("Draw", menuTextColor, tricknessSize, 45);
+        SetText("Draw", menuTextColor, tricknessSize, 45, 0);
         show();
 
-        player.ChangeLifeTexture();
-        enemy.ChangeLifeTexture();
+        player.ChangeLifeTexture(1);
+        enemy.ChangeLifeTexture(1);
 
         player.SetLife(player.GetLife() - player.GetBid());
         enemy.SetLife(enemy.GetLife() - enemy.GetBid());
 
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        SetText("Draw", menuTextColor, tricknessSize, 45, 0);
         show();
-        std::this_thread::sleep_for(std::chrono::seconds(2));
     }
 
     else if (result == 2) {
-        enemy.ChangeFirstCardTexture();
-
-        AddText("You win", menuTextColor, tricknessSize, 45);
+        SetText("You win", menuTextColor, tricknessSize, 45, 0);
         show();
 
-        enemy.ChangeLifeTexture();
+        enemy.ChangeLifeTexture(1);
 
         enemy.SetLife(enemy.GetLife() - enemy.GetBid());
 
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        SetText("You win", menuTextColor, tricknessSize, 45, 0);
         show();
-        std::this_thread::sleep_for(std::chrono::seconds(2));
     }
 
     else {
-        enemy.ChangeFirstCardTexture();
-
-        AddText("You lose", menuTextColor, tricknessSize, 45);
+        SetText("You lose", menuTextColor, tricknessSize, 45, 0);
         show();
 
-        player.ChangeLifeTexture();
+        player.ChangeLifeTexture(1);
 
         player.SetLife(player.GetLife() - player.GetBid());
 
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+        SetText("You lose", menuTextColor, tricknessSize, 45, 0);
         show();
-        std::this_thread::sleep_for(std::chrono::seconds(2));
     }
+    std::this_thread::sleep_for(std::chrono::seconds(1));
 }
 
 void Game::RestartRound() {
-    //player.SetBid(1);
-    //enemy.SetBid(1);
 
     CounterPass = 0;
 
@@ -204,10 +240,23 @@ void Game::RestartRound() {
     }
 }
 
-void Game::AddText(std::string newText, sf::Color newColor, int thickness, int size) {
+void Game::SetText(std::string newText, sf::Color newColor, int thickness, int size, int trigger) {
     text = sf::Text(newText, font, size);
     text.setFillColor(newColor);
     text.setOutlineThickness(thickness);
-    text.setPosition((WIDTH - text.getLocalBounds().width) / 2,
-        (HEIGHT - text.getLocalBounds().height) / 2);
+
+    switch (trigger) {
+    case 0:
+        text.setPosition((WIDTH - text.getLocalBounds().width) / 2, (HEIGHT - text.getLocalBounds().height) / 2);
+        break;
+    case 1: 
+        text.setPosition((WIDTH - text.getLocalBounds().width) / 1.4, (HEIGHT - text.getLocalBounds().height) / 3);
+        break;
+    case 2:
+        text.setPosition((WIDTH - text.getLocalBounds().width) / 1.4, (HEIGHT - text.getLocalBounds().height) / 1.5);
+        break;
+    case 3:
+        text.setPosition(WIDTH * 0.375, HEIGHT * 0.95);
+        break;
+    }
 }

@@ -32,8 +32,6 @@ public:
     int GetCardCounter();
 
     void ClearDeck();
-
-    void show(sf::RenderWindow& window);
 };
 
 void AddInDeck(CardDeck& deck, int& CardsInDeck);

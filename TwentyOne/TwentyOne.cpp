@@ -42,8 +42,8 @@ int main()
 
     // Установка фона, шрифта, текста, подготовка меню
 
-    sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Twenty One", sf::Style::Fullscreen);
-    //sf::RenderWindow window(sf::VideoMode(1800, 1000), "Twenty One");
+    //sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Twenty One", sf::Style::Fullscreen);
+    sf::RenderWindow window(sf::VideoMode(1800, 1000), "Twenty One");
 
     sf::RectangleShape background(sf::Vector2f(WIDTH, HEIGHT));
 
@@ -89,32 +89,16 @@ int main()
             EnemyPlayer enemy(deck.RemoveCard(random(1, CardsInDeck), CardsInDeck), deck.RemoveCard(random(1, CardsInDeck), CardsInDeck));
 
             Game game21(player, enemy, deck, CardsInDeck, window, event, background);
-            game21.Play(); // Сама игра
 
-
-
-            // Сделать: закрытую карту игрока (Но под картой должен отображаться ее номер), 
-            // показ суммы карт (у противника - ? + CardSum - Array_of_Cards[0] / winningNumber; у игрока - CardSum / winningNumber)
-
-
-            /*do {
-                game21.Play();
-                sf::Text TextAfterTheGame;
-                TextAfterTheGame.setFont(menuFont);
-                initText(TextAfterTheGame, (WIDTH - TextAfterTheGame.getLocalBounds().width) / 3,
-                    (HEIGHT - TextAfterTheGame.getLocalBounds().height) / 3, "Do you want to play again?", 100, menuTextColor);
-            } while (true);*/
+            int result = 0;
+            do {
+                game21.Play(); // Сама игра
+                result = game21.AfterThePlay();
+            } while (result == 1);
         }
         window.clear();
         window.draw(background);
         window.draw(titul);
         window.display();
     }
-    /*for (int i = 0;; ++i) {      Для проверки, какая клавиша под каким номером
-        if (_kbhit()) {
-            int key = _getch();
-            cout << key << endl;
-            if (key == 0x1B) break;
-        }
-    }*/
 }

@@ -1,28 +1,29 @@
 #pragma once
 #include "CardDeck.h"
+#include "Config.h"
 
 class Player {
 public:
     virtual void TakeCard(const Card& NewCard) = 0;
     virtual void Pass(bool& WHOMOVE, int& CounterPass) = 0;
-    virtual void Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& MaxCards, int& winningNumber, 
-        sf::RenderWindow& window) = 0;
+    virtual void Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& MaxCards, int& winningNumber, sf::RenderWindow& window) = 0;
 
     virtual void showCards(sf::RenderWindow& window) = 0;
     virtual void showLifes(sf::RenderWindow& window) = 0;
 
-    virtual void ChangeLifeTexture() = 0;
-    virtual void lifeSpriteSetup() = 0;
-
     virtual int GetLife() = 0;
     virtual int GetBid() = 0;
     virtual int GetCardSum() = 0;
+    virtual int GetFirstCardNumber() = 0;
 
-    //virtual void SetBid(int newBid) = 0;
     virtual void SetLife(int newAlive) = 0;
     virtual void SetCardSum(int newCardSum) = 0;
 
     virtual void ClearArray() = 0;
+
+    virtual void ChangeFirstCardTexture() = 0;
+    virtual void ChangeLifeTexture(int index) = 0;
+    virtual void lifeSpriteSetup() = 0;
 };
 
 class YourPlayer : public Player {
@@ -36,11 +37,12 @@ private:
     sf::Texture newLifeTexture;   //“екстуры дл€ жизней (красное сердце и пустое)
     sf::Texture textureLife;
 
-    int cardPosX = 650, cardPosY = 775; // ѕозици€ 1 карты
+    std::string pathFirstCardTexture; // ѕуть к текстуре первой карты (нужен, так как при игре карта закрыта, а потом нужно ее открыть)
+
+    // 650 = 34% от 1920; 775 = 72% от 1080
+    int cardPosX = WIDTH * 0.34, cardPosY = HEIGHT * 0.72; // ѕозици€ 1 карты
 
     void Pass(bool& WHOMOVE, int& CounterPass);
-
-    void lifeSpriteSetup();
 public:
     YourPlayer();
     YourPlayer(const Card& FirstCard, const Card& SecondCard);
@@ -62,13 +64,17 @@ public:
 
     void SetLife(int newLife);
 
-    //void SetBid(int newBid);
-
     void SetCardSum(int newCardSum);
 
     void ClearArray();
 
-    void ChangeLifeTexture();
+    void ChangeFirstCardTexture();
+
+    void ChangeLifeTexture(int index);
+
+    int GetFirstCardNumber();
+
+    void lifeSpriteSetup();
 };
 
 class EnemyPlayer : public Player {
@@ -84,11 +90,10 @@ private:
 
     std::string pathFirstCardTexture; // ѕуть к текстуре первой карты (нужен, так как при игре карта закрыта, а потом нужно ее открыть)
 
-    int cardPosX = 800, cardPosY = 300; // ѕозици€ 1 карты
+    // 800 = 42% от 1920; 300 = 28% от 1080
+    int cardPosX = WIDTH * 0.42, cardPosY = HEIGHT * 0.28; // ѕозици€ 1 карты
 
     void Pass(bool& WHOMOVE, int& CounterPass);
-
-    void lifeSpriteSetup();
 public:
     EnemyPlayer();
     EnemyPlayer(const Card& FirstCard, const Card& SecondCard);
@@ -110,13 +115,15 @@ public:
 
     void SetLife(int newLife);
 
-    //void SetBid(int newBid);
-
     void SetCardSum(int newCardSum);
 
     void ClearArray();
 
     void ChangeFirstCardTexture();
 
-    void ChangeLifeTexture();
+    void ChangeLifeTexture(int index);
+
+    int GetFirstCardNumber();
+
+    void lifeSpriteSetup();
 };

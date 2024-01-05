@@ -12,8 +12,8 @@ private:
     EnemyPlayer enemy;
     CardDeck deck;
 
-    bool WHOMOVE; // true - your move, false - enemy move
-    int CounterPass; // if 2 - opening of closed cards
+    bool WHOMOVE; // true - твой ход, false - ход противника
+    int CounterPass; // Если 2 - закрытые карты открываются
     int CardsInDeck;
     int winningNumber;
 
@@ -29,7 +29,7 @@ private:
 
     void RestartRound();
 
-    void AddText(std::string newText, sf::Color newColor, int thickness, int size);
+    void SetText(std::string newText, sf::Color newColor, int thickness, int size, int trigger);
 
     void show();
 public:
@@ -37,4 +37,6 @@ public:
         sf::RenderWindow& window, sf::Event& event, sf::RectangleShape& background);
 
     void Play();
+
+    int AfterThePlay();
 };

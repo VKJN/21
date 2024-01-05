@@ -65,15 +65,6 @@ void CardDeck::ClearDeck() {
     deck.clear();
 }
 
-void CardDeck::show(sf::RenderWindow& window) {
-    int x = 100, y = 300;
-    for (auto i : deck) {
-        i.setTextureCardPosition(x, y);
-        i.Show(window);
-        x += 155;
-    }
-}
-
 // Просто функция по заполнению колоды
 void AddInDeck(CardDeck& deck, int& CardsInDeck) {
     sf::Texture texture_card;

@@ -10,6 +10,13 @@ YourPlayer::YourPlayer(const Card& FirstCard, const Card& SecondCard) {
 
     CardSum += FirstCard.GetNumber() + SecondCard.GetNumber();
 
+    pathFirstCardTexture = "image/" + std::to_string(Array_of_cards[0].GetNumber()) + ".jpg";
+
+    ChangeFirstCardTexture();
+
+    newLifeTexture.loadFromFile("image/empty life.png");
+    textureLife.loadFromFile("image/full life.png");
+
     lifeSpriteSetup();
 }
 
@@ -17,6 +24,10 @@ YourPlayer::YourPlayer(const Card& FirstCard, const Card& SecondCard) {
 void YourPlayer::TakeCard(const Card& NewCard) {
     Array_of_cards.push_back(NewCard);
     CardSum += NewCard.GetNumber();
+
+    if (Array_of_cards.size() == 1) {
+        ChangeFirstCardTexture();
+    }
 }
 
 
@@ -64,7 +75,7 @@ void YourPlayer::showCards(sf::RenderWindow& window) {
         i.Show(window);
         cardPosX += 170;
     }
-    cardPosX = 650;
+    cardPosX = WIDTH * 0.34;
 }
 
 void YourPlayer::showLifes(sf::RenderWindow& window) {
@@ -89,10 +100,6 @@ void YourPlayer::SetLife(int newLife) {
     this->Life = newLife;
 }
 
-//void YourPlayer::SetBid(int newBid) {
-//    this->Bid = newBid;
-//}
-
 void YourPlayer::SetCardSum(int newCardSum) {
     this->CardSum = newCardSum;
 }
@@ -101,25 +108,47 @@ void YourPlayer::ClearArray() {
     Array_of_cards.clear();
 }
 
+void YourPlayer::ChangeFirstCardTexture() {
+    sf::Texture newTexture;
 
-// Смена текстуры жизни на пустую
-void YourPlayer::ChangeLifeTexture() {
-    if (!newLifeTexture.loadFromFile("image/empty life.png")) {}
-    Array_of_Lifes[5 - Life].setTexture(newLifeTexture);
+    if (pathFirstCardTexture == "image/back of the card.jpg") {
+        pathFirstCardTexture = "image/" + std::to_string(Array_of_cards[0].GetNumber()) + ".jpg";
+        if (!newTexture.loadFromFile(pathFirstCardTexture)) {}
+    }
+    else {
+        pathFirstCardTexture = "image/back of the card.jpg";
+        if (!newTexture.loadFromFile(pathFirstCardTexture)) {}
+    }
+    Array_of_cards[0].changeTexture(newTexture);
+}
+
+
+// Смена текстуры жизни на пустую и наоборот
+void YourPlayer::ChangeLifeTexture(int index) {
+    if (index == 1) {
+        Array_of_Lifes[5 - Life].setTexture(newLifeTexture);
+    }
+    else {
+        for (auto i : Array_of_Lifes) {
+            i.setTexture(textureLife);
+        }
+    }
 }
 
 
 // Метод для установки текстуры и спрайта жизней и добавление спрайта в вектор
 void YourPlayer::lifeSpriteSetup() {
-    if (!textureLife.loadFromFile("image/full life.png")) {}
-
     sf::Sprite spriteLife;
     spriteLife.setTexture(textureLife);
 
-    for (int i = 0, posX = 80, posY = 650; i < 5; i++, posY += 60) {
+    for (int i = 0, posX = 100, posY = HEIGHT * 0.6; i < 5; i++, posY += 60) {  //650 = 60% от 1080
         spriteLife.setPosition(posX, posY);
         Array_of_Lifes.push_back(spriteLife);
     }
+}
+
+int YourPlayer::GetFirstCardNumber() {
+    return Array_of_cards[0].GetNumber();
 }
 
 
@@ -135,6 +164,9 @@ EnemyPlayer::EnemyPlayer(const Card& FirstCard, const Card& SecondCard) {
     pathFirstCardTexture = "image/" + std::to_string(Array_of_cards[0].GetNumber()) + ".jpg";
 
     ChangeFirstCardTexture();
+
+    newLifeTexture.loadFromFile("image/empty life.png");
+    textureLife.loadFromFile("image/full life.png");
 
     lifeSpriteSetup();
 }
@@ -181,7 +213,7 @@ void EnemyPlayer::showCards(sf::RenderWindow& window) {
         i.Show(window);
         cardPosX += 170;
     }
-    cardPosX = 800;
+    cardPosX = WIDTH * 0.42;
 }
 
 void EnemyPlayer::showLifes(sf::RenderWindow& window) {
@@ -206,10 +238,6 @@ void EnemyPlayer::SetLife(int newLife) {
     this->Life = newLife;
 }
 
-//void EnemyPlayer::SetBid(int newBid) {
-//    this->Bid = newBid;
-//}
-
 void EnemyPlayer::SetCardSum(int newCardSum) {
     this->CardSum = newCardSum;
 }
@@ -233,22 +261,30 @@ void EnemyPlayer::ChangeFirstCardTexture() {
 }
 
 
-// Смена текстуры жизни на пустую
-void EnemyPlayer::ChangeLifeTexture() {
-    if (!newLifeTexture.loadFromFile("image/empty life.png")) {}
-    Array_of_Lifes[5 - Life].setTexture(newLifeTexture);
+// Смена текстуры жизни на пустую и наоборот
+void EnemyPlayer::ChangeLifeTexture(int index) {
+    if (index == 1) {
+        Array_of_Lifes[5 - Life].setTexture(newLifeTexture);
+    }
+    else {
+        for (auto i : Array_of_Lifes) {
+            i.setTexture(textureLife);
+        }
+    }
 }
 
 
 // Метод для установки текстуры и спрайта жизней и добавление спрайта в вектор
 void EnemyPlayer::lifeSpriteSetup() {
-    if (!textureLife.loadFromFile("image/full life.png")) {}
-
     sf::Sprite spriteLife;
     spriteLife.setTexture(textureLife);
 
-    for (int i = 0, posX = 80, posY = 80; i < 5; i++, posY += 60) {
+    for (int i = 0, posX = 100, posY = 100; i < 5; i++, posY += 60) {
         spriteLife.setPosition(posX, posY);
         Array_of_Lifes.push_back(spriteLife);
     }
+}
+
+int EnemyPlayer::GetFirstCardNumber() {
+    return Array_of_cards[0].GetNumber();
 }

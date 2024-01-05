@@ -75,9 +75,11 @@ void GameMenu::handleEvent(sf::RenderWindow& window, sf::Event& event, sf::Recta
 	}
 
 	if (event.type == sf::Event::Closed) {
+		std::exit(0);
 		window.close();
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+		std::exit(0);
 		window.close();
 	}
 	if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
@@ -97,8 +99,8 @@ void GameMenu::handleMouseClick(sf::RenderWindow& window, sf::Event& event, sf::
 				OpenRules(window, background, event);
 				break;
 			case 2:
-				window.close();
 				std::exit(0);
+				window.close();
 				break;
 			}
 		}
