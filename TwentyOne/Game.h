@@ -4,9 +4,9 @@
 
 class Game {
 private:
-    sf::RenderWindow window;
+    /*sf::RenderWindow window;
     sf::Event event;
-    sf::RectangleShape background;
+    sf::RectangleShape background;*/
 
     YourPlayer player;
     EnemyPlayer enemy;
@@ -21,22 +21,22 @@ private:
     sf::Text text;
     int textPosX, textPosY;
 
-    void Round();
+    void Round(sf::RenderWindow& window, sf::RectangleShape& background);
 
     int CheckWinner();
 
-    void RoundResult(int result);
+    void RoundResult(int result, sf::RenderWindow& window, sf::RectangleShape& background);
 
     void RestartRound();
 
     void SetText(std::string newText, sf::Color newColor, int thickness, int size, int trigger);
 
-    void show();
+    void show(sf::RenderWindow& window, sf::RectangleShape& background);
 public:
-    Game(YourPlayer& player, EnemyPlayer& enemy, CardDeck& deck, int CardsInDeck,
-        sf::RenderWindow& window, sf::Event& event, sf::RectangleShape& background);
+    Game(YourPlayer& player, EnemyPlayer& enemy, CardDeck& deck, int CardsInDeck
+        /*sf::RenderWindow& window, sf::Event event, sf::RectangleShape background*/);
 
-    void Play();
+    void Play(sf::RenderWindow& window, sf::RectangleShape& background);
 
-    int AfterThePlay();
+    int AfterThePlay(sf::RenderWindow& window, sf::RectangleShape& background);
 };

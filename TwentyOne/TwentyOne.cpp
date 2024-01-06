@@ -42,8 +42,8 @@ int main()
 
     // Установка фона, шрифта, текста, подготовка меню
 
-    //sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Twenty One", sf::Style::Fullscreen);
-    sf::RenderWindow window(sf::VideoMode(1800, 1000), "Twenty One");
+    sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Twenty One", sf::Style::Fullscreen);
+    //sf::RenderWindow window(sf::VideoMode(1800, 1000), "Twenty One");
 
     sf::RectangleShape background(sf::Vector2f(WIDTH, HEIGHT));
 
@@ -68,8 +68,6 @@ int main()
     Menu.setColorTextMenu(menuTextColor);
     Menu.AlignMenu();
 
-    int CardsInDeck = 11;
-
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -82,18 +80,19 @@ int main()
 
             Menu.GamePlayMenu(window, background, titul, event); // Меню игры
 
+            int CardsInDeck = 11;
             CardDeck deck;
             AddInDeck(deck, CardsInDeck);
 
             YourPlayer player(deck.RemoveCard(random(1, CardsInDeck), CardsInDeck), deck.RemoveCard(random(1, CardsInDeck), CardsInDeck));
             EnemyPlayer enemy(deck.RemoveCard(random(1, CardsInDeck), CardsInDeck), deck.RemoveCard(random(1, CardsInDeck), CardsInDeck));
 
-            Game game21(player, enemy, deck, CardsInDeck, window, event, background);
+            Game game21(player, enemy, deck, CardsInDeck/*, window, event, background*/);
 
             int result = 0;
             do {
-                game21.Play(); // Сама игра
-                result = game21.AfterThePlay();
+                game21.Play(window, background); // Сама игра
+                result = game21.AfterThePlay(window, background);
             } while (result == 1);
         }
         window.clear();

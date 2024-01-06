@@ -129,9 +129,8 @@ void YourPlayer::ChangeLifeTexture(int index) {
         Array_of_Lifes[5 - Life].setTexture(newLifeTexture);
     }
     else {
-        for (auto i : Array_of_Lifes) {
-            i.setTexture(textureLife);
-        }
+        Array_of_Lifes.clear();
+        lifeSpriteSetup();
     }
 }
 
@@ -267,9 +266,8 @@ void EnemyPlayer::ChangeLifeTexture(int index) {
         Array_of_Lifes[5 - Life].setTexture(newLifeTexture);
     }
     else {
-        for (auto i : Array_of_Lifes) {
-            i.setTexture(textureLife);
-        }
+        Array_of_Lifes.clear();
+        lifeSpriteSetup();
     }
 }
 
