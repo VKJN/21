@@ -56,9 +56,6 @@ int CardDeck::GetCardCounter() {
     if (deck.size() > 0) {
         return deck.size();
     }
-    else {
-        throw "Deck of cards is empty";
-    }
 }
 
 void CardDeck::ClearDeck() {

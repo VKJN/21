@@ -1,9 +1,24 @@
-﻿  TwentyOne.cpp
+﻿  Game.cpp
 d:\projects\21\twentyone\config.h(4): warning C4244: инициализация: преобразование "unsigned int" в "float", возможна потеря данных
 d:\projects\21\twentyone\config.h(4): warning C4244: инициализация: преобразование "unsigned int" в "const float", возможна потеря данных
 d:\projects\21\twentyone\config.h(5): warning C4244: инициализация: преобразование "unsigned int" в "float", возможна потеря данных
 d:\projects\21\twentyone\config.h(5): warning C4244: инициализация: преобразование "unsigned int" в "const float", возможна потеря данных
 d:\projects\21\twentyone\player.h(43): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
 d:\projects\21\twentyone\player.h(94): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-d:\projects\21\twentyone\twentyone.cpp(40): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+d:\projects\21\twentyone\game.cpp(240): warning C4244: аргумент: преобразование "int" в "float", возможна потеря данных
+d:\projects\21\twentyone\game.cpp(247): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+d:\projects\21\twentyone\game.cpp(250): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+d:\projects\21\twentyone\game.cpp(253): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+  TwentyOne.cpp
+d:\projects\21\twentyone\config.h(4): warning C4244: инициализация: преобразование "unsigned int" в "float", возможна потеря данных
+d:\projects\21\twentyone\config.h(4): warning C4244: инициализация: преобразование "unsigned int" в "const float", возможна потеря данных
+d:\projects\21\twentyone\config.h(5): warning C4244: инициализация: преобразование "unsigned int" в "float", возможна потеря данных
+d:\projects\21\twentyone\config.h(5): warning C4244: инициализация: преобразование "unsigned int" в "const float", возможна потеря данных
+d:\projects\21\twentyone\player.h(43): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
+d:\projects\21\twentyone\player.h(94): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
+d:\projects\21\twentyone\twentyone.cpp(16): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+d:\projects\21\twentyone\twentyone.cpp(40): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+d:\projects\21\twentyone\twentyone.cpp(45): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+  Создание кода...
+d:\projects\21\twentyone\game.cpp(132): warning C4715: Game::AfterThePlay: значение возвращается не при всех путях выполнения
   TwentyOne.vcxproj -> D:\Projects\21\TwentyOne\x64\Debug\TwentyOne.exe

@@ -2,8 +2,7 @@
 #include "Game.h"
 #include "Config.h"
 
-Game::Game(YourPlayer& player, EnemyPlayer& enemy, CardDeck& deck, int CardsInDeck
-    /*sf::RenderWindow& window, sf::Event& event, sf::RectangleShape& background*/) {
+Game::Game(YourPlayer& player, EnemyPlayer& enemy, CardDeck& deck, int CardsInDeck) {
     this->enemy = enemy;
     this->player = player;
     this->deck = deck;
@@ -12,10 +11,6 @@ Game::Game(YourPlayer& player, EnemyPlayer& enemy, CardDeck& deck, int CardsInDe
     this->CardsInDeck = CardsInDeck;
     this->winningNumber = 21;
 
-    /*this->window.create(window.getSystemHandle());
-    this->event = event;
-    this->background = background;*/
-
     if (!font.loadFromFile("fonts/comicz.ttf")) {
         // error...
     }
@@ -23,7 +18,6 @@ Game::Game(YourPlayer& player, EnemyPlayer& enemy, CardDeck& deck, int CardsInDe
 }
 
 void Game::Play(sf::RenderWindow& window, sf::RectangleShape& background) {
-    //window.setMouseCursorVisible(false);
     do {
         Round(window, background);
         RoundResult(CheckWinner(), window, background);

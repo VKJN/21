@@ -3,30 +3,6 @@
 #include "GameMenu.h"
 #include "Game.h"
 
-//class TrumpCards {
-//private:
-//
-//public:
-//
-//};
-//
-//class SpecialCardDeck {
-//private:
-//    vector<TrumpCards*> deck;
-//
-//public:
-//    void AddCard(TrumpCards* newSpecialCard) {
-//        deck.push_back(newSpecialCard);
-//    }
-//
-//    ~SpecialCardDeck() {
-//        for (TrumpCards* card : deck) {
-//            delete card;
-//        }
-//        deck.clear();
-//    }
-//};
-
 void initText(sf::Text& text, float posX, float posY, std::string str, int sizeFont, sf::Color menuTextColor) {
     text.setCharacterSize(sizeFont);
     text.setPosition(posX, posY);
@@ -43,7 +19,6 @@ int main()
     // Установка фона, шрифта, текста, подготовка меню
 
     sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "Twenty One", sf::Style::Fullscreen);
-    //sf::RenderWindow window(sf::VideoMode(1800, 1000), "Twenty One");
 
     sf::RectangleShape background(sf::Vector2f(WIDTH, HEIGHT));
 
@@ -60,11 +35,13 @@ int main()
 
     sf::Text titul;
     titul.setFont(menuFont);
-    initText(titul, 600, 50, "Twenty One", 125, menuTextColor);
+    // 600 = 31% от 1920
+    initText(titul, WIDTH * 0.31, 50, "Twenty One", 125, menuTextColor);
 
     std::vector<std::string> nameMenu{ "Play", "Rules", "Exit" };
 
-    GameMenu Menu(950, 400, 65, 150, nameMenu);
+    // 950 = 49% от 1920 и 400 = 37% от 1080
+    GameMenu Menu(WIDTH * 0.49, HEIGHT * 0.37, 65, 175, nameMenu);
     Menu.setColorTextMenu(menuTextColor);
     Menu.AlignMenu();
 
@@ -80,6 +57,7 @@ int main()
 
             Menu.GamePlayMenu(window, background, titul, event); // Меню игры
 
+            // Колода обычных карт
             int CardsInDeck = 11;
             CardDeck deck;
             AddInDeck(deck, CardsInDeck);
@@ -87,7 +65,7 @@ int main()
             YourPlayer player(deck.RemoveCard(random(1, CardsInDeck), CardsInDeck), deck.RemoveCard(random(1, CardsInDeck), CardsInDeck));
             EnemyPlayer enemy(deck.RemoveCard(random(1, CardsInDeck), CardsInDeck), deck.RemoveCard(random(1, CardsInDeck), CardsInDeck));
 
-            Game game21(player, enemy, deck, CardsInDeck/*, window, event, background*/);
+            Game game21(player, enemy, deck, CardsInDeck);
 
             int result = 0;
             do {

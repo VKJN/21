@@ -4,10 +4,6 @@
 
 class Game {
 private:
-    /*sf::RenderWindow window;
-    sf::Event event;
-    sf::RectangleShape background;*/
-
     YourPlayer player;
     EnemyPlayer enemy;
     CardDeck deck;
@@ -33,8 +29,7 @@ private:
 
     void show(sf::RenderWindow& window, sf::RectangleShape& background);
 public:
-    Game(YourPlayer& player, EnemyPlayer& enemy, CardDeck& deck, int CardsInDeck
-        /*sf::RenderWindow& window, sf::Event event, sf::RectangleShape background*/);
+    Game(YourPlayer& player, EnemyPlayer& enemy, CardDeck& deck, int CardsInDeck);
 
     void Play(sf::RenderWindow& window, sf::RectangleShape& background);
 
