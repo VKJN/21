@@ -21,9 +21,9 @@ void GameMenu::processEvents() {
 		}
 
 		else if (rulesOpened && event.type == sf::Event::KeyPressed) {
-			rulesOpened = false; // Установка флага в false при нажатии кнопки в правилах
-			textFromFile.clear(); // Очистка вектора, чтобы при повторном открытии файла не было прошлого текста
-			textPosY = 500; // Чтобы текст не уезжал вниз
+			rulesOpened = false; // Г“Г±ГІГ Г­Г®ГўГЄГ  ГґГ«Г ГЈГ  Гў false ГЇГ°ГЁ Г­Г Г¦Г ГІГЁГЁ ГЄГ­Г®ГЇГЄГЁ Гў ГЇГ°Г ГўГЁГ«Г Гµ
+			textFromFile.clear(); // ГЋГ·ГЁГ±ГІГЄГ  ГўГҐГЄГІГ®Г°Г , Г·ГІГ®ГЎГ» ГЇГ°ГЁ ГЇГ®ГўГІГ®Г°Г­Г®Г¬ Г®ГІГЄГ°Г»ГІГЁГЁ ГґГ Г©Г«Г  Г­ГҐ ГЎГ»Г«Г® ГЇГ°Г®ГёГ«Г®ГЈГ® ГІГҐГЄГ±ГІГ 
+			textPosY = 500; // Г—ГІГ®ГЎГ» ГІГҐГЄГ±ГІ Г­ГҐ ГіГҐГ§Г¦Г Г« ГўГ­ГЁГ§
 
 			updateMenuText();
 		}
@@ -31,7 +31,7 @@ void GameMenu::processEvents() {
 }
 
 void GameMenu::update() {
-	// Проверка, если координаты мыши попадают по кнопке, она меняет цвет
+	// ГЏГ°Г®ГўГҐГ°ГЄГ , ГҐГ±Г«ГЁ ГЄГ®Г®Г°Г¤ГЁГ­Г ГІГ» Г¬Г»ГёГЁ ГЇГ®ГЇГ Г¤Г ГѕГІ ГЇГ® ГЄГ­Г®ГЇГЄГҐ, Г®Г­Г  Г¬ГҐГ­ГїГҐГІ Г¶ГўГҐГІ
 	sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
 	for (int i = 0; i < mainMenu.size(); i++) {
 		if (mainMenu[i].getGlobalBounds().contains(float(mousePosition.x), float(mousePosition.y))) {
@@ -88,7 +88,7 @@ void GameMenu::setColorTextMenu(sf::Color color) {
 	}
 }
 
-// Метод, для установки текста посередине экрана
+// ГЊГҐГІГ®Г¤, Г¤Г«Гї ГіГ±ГІГ Г­Г®ГўГЄГЁ ГІГҐГЄГ±ГІГ  ГЇГ®Г±ГҐГ°ГҐГ¤ГЁГ­ГҐ ГЅГЄГ°Г Г­Г 
 void GameMenu::AlignMenu() {
 	float nullx = 0;
 
@@ -98,11 +98,11 @@ void GameMenu::AlignMenu() {
 	}
 }
 
-// Метод, для обновления кнопок меню. Вызывается в конструкторе и после правил, так как во время показа правил, вектор пустой
+// ГЊГҐГІГ®Г¤, Г¤Г«Гї Г®ГЎГ­Г®ГўГ«ГҐГ­ГЁГї ГЄГ­Г®ГЇГ®ГЄ Г¬ГҐГ­Гѕ. Г‚Г»Г§Г»ГўГ ГҐГІГ±Гї Гў ГЄГ®Г­Г±ГІГ°ГіГЄГІГ®Г°ГҐ ГЁ ГЇГ®Г±Г«ГҐ ГЇГ°Г ГўГЁГ«, ГІГ ГЄ ГЄГ ГЄ ГўГ® ГўГ°ГҐГ¬Гї ГЇГ®ГЄГ Г§Г  ГЇГ°Г ГўГЁГ«, ГўГҐГЄГІГ®Г° ГЇГіГ±ГІГ®Г©
 void GameMenu::updateMenuText() {
 	mainMenu.resize(nameMenu.size());
 
-	for (int i = 0, posY = menuY; i < mainMenu.size(); i++, posY += menuStep) {  // posY - для расстояния между текстом
+	for (int i = 0, posY = menuY; i < mainMenu.size(); i++, posY += menuStep) {  // posY - Г¤Г«Гї Г°Г Г±Г±ГІГ®ГїГ­ГЁГї Г¬ГҐГ¦Г¤Гі ГІГҐГЄГ±ГІГ®Г¬
 		initText(mainMenu[i], menuX, posY, nameMenu[i], sizeFont, menuColor);
 	}
 
@@ -147,8 +147,8 @@ void GameMenu::OpenRules() {
 }
 
 GameMenu::GameMenu(std::vector<std::string>& nameMenu)
-	: /*window(sf::VideoMode::getDesktopMode(), "Twenty One", sf::Style::Fullscreen),*/
-	window(sf::VideoMode(1800, 1000), "Twenty One"),
+	: window(sf::VideoMode::getDesktopMode(), "Twenty One", sf::Style::Fullscreen),
+	/*window(sf::VideoMode(1800, 1000), "Twenty One"),*/
 	background(sf::Vector2f(WIDTH, HEIGHT)), menuX(WIDTH * 0.49), menuY(HEIGHT * 0.37), menuStep(175), sizeFont(65)
 {
 	this->nameMenu = nameMenu;
