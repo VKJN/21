@@ -127,22 +127,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Card.cpp" />
     <ClCompile Include="CardDeck.cpp" />
+    <ClCompile Include="EnemyPlayer.cpp" />
     <ClCompile Include="GameMenu.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="TwentyOne.cpp" />
+    <ClCompile Include="YourPlayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Card.h" />
     <ClInclude Include="CardDeck.h" />
     <ClInclude Include="Config.h" />
+    <ClInclude Include="EnemyPlayer.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameMenu.h" />
     <ClInclude Include="Header.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="YourPlayer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
