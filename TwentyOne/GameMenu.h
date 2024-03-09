@@ -2,38 +2,46 @@
 
 class GameMenu {
 private:
+	sf::RenderWindow window;
+
+	sf::RectangleShape background;
+	sf::Texture backgroundTexture;
+
+	sf::Font menuFont;
+	sf::Text titul;
+
+	std::vector<sf::Text> mainMenu;
+	int textPosX = 250, textPosY = 500;
+	std::vector<std::string> nameMenu;
+
+	std::vector<sf::Text> textFromFile;
+
+	sf::Color menuColor;
+
 	float menuX;
 	float menuY;
 	int menuStep;
-	int sizeFont;           
+	int sizeFont;
 	int mainMenuSelected;
+	bool resultMenu = false;
 
+	bool rulesOpened = false;
 	std::string rulesPath = "Rules.txt";
 
-	sf::Font font;
+	void processEvents();
+	void update();
+	void render();
 
-	std::vector<sf::Text> mainMenu;
-	std::vector<sf::Text> textFromFile;
-	int textPosX = 250, textPosY = 500;
-
-	sf::Color menuColor;
-		
-	void setInitText(sf::Text& text, std::string& str, float xpos, float ypos, sf::Color color, int fontSize);
-
-	void OpenRules(sf::RenderWindow& window, sf::RectangleShape& background, sf::Event& event);
-
-	void handleEvent(sf::RenderWindow& window, sf::Event& event, sf::RectangleShape& background, bool& resultMenu);
-
-	void handleMouseClick(sf::RenderWindow& window, sf::Event& event, sf::RectangleShape& background, 
-		bool& resultMenu, const sf::Vector2i& mousePosition);
-public:
-	GameMenu(float menux, float menuy, int sizeFont, int step, std::vector<std::string>& name);
-
-	void draw(sf::RenderWindow& window);
-		
+	void initText(sf::Text& text, float posX, float posY, std::string& str, int sizeFont, sf::Color color);
+	void updateMenuText();
 	void setColorTextMenu(sf::Color color);
-
 	void AlignMenu();
 
-	void GamePlayMenu(sf::RenderWindow& window, sf::RectangleShape& background, sf::Text& titul, sf::Event& event);
+	void handleMouseClick(const sf::Vector2i& mousePosition);
+	void OpenRules();
+public:
+	GameMenu(std::vector<std::string>& nameMenu);
+	void GamePlayMenu();
+	sf::RenderWindow& getWindow();
+	sf::RectangleShape getBackground();
 };

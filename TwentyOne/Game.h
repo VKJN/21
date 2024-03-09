@@ -1,9 +1,13 @@
 #pragma once
-#include "Player.h"
+#include "YourPlayer.h"
+#include "EnemyPlayer.h"
 #include "CardDeck.h"
 
 class Game {
 private:
+    sf::RenderWindow& window;
+    sf::RectangleShape background;
+
     YourPlayer player;
     EnemyPlayer enemy;
     CardDeck deck;
@@ -17,21 +21,28 @@ private:
     sf::Text text;
     int textPosX, textPosY;
 
-    void Round(sf::RenderWindow& window, sf::RectangleShape& background);
+    std::string replicas[9] = { "New round", "Your move", "Enemy move", "Draw", "You win", "You lose", "You lose in game" , 
+        "You win in game", "Do you want to play again? Y/N" };
+
+    void Round();
 
     int CheckWinner();
 
-    void RoundResult(int result, sf::RenderWindow& window, sf::RectangleShape& background);
+    void RoundResult(int result);
 
     void RestartRound();
 
     void SetText(std::string newText, sf::Color newColor, int thickness, int size, int trigger);
 
-    void show(sf::RenderWindow& window, sf::RectangleShape& background);
+    void show();
+
+    void processEvents();
+    void update();
+    void render();
 public:
-    Game(YourPlayer& player, EnemyPlayer& enemy, CardDeck& deck, int CardsInDeck);
+    Game(CardDeck& deck, int CardsInDeck, sf::RenderWindow& window_, sf::RectangleShape background_);
 
-    void Play(sf::RenderWindow& window, sf::RectangleShape& background);
+    void Play();
 
-    int AfterThePlay(sf::RenderWindow& window, sf::RectangleShape& background);
+    int AfterThePlay();
 };

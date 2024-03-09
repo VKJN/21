@@ -2,13 +2,15 @@
 #include "Game.h"
 #include "Config.h"
 
-Game::Game(YourPlayer& player, EnemyPlayer& enemy, CardDeck& deck, int CardsInDeck) {
-    this->enemy = enemy;
-    this->player = player;
-    this->deck = deck;
-
+Game::Game(CardDeck& deck, int CardsInDeck, sf::RenderWindow& window_, sf::RectangleShape background_)
+    : window(window_),
+    background(background_),
+    deck(deck),
+    CardsInDeck(CardsInDeck),
+    player(deck.RemoveCard(random(1, CardsInDeck), CardsInDeck), deck.RemoveCard(random(1, CardsInDeck), CardsInDeck)),
+    enemy(deck.RemoveCard(random(1, CardsInDeck), CardsInDeck), deck.RemoveCard(random(1, CardsInDeck), CardsInDeck))
+{
     this->CounterPass = 0;
-    this->CardsInDeck = CardsInDeck;
     this->winningNumber = 21;
 
     if (!font.loadFromFile("fonts/comicz.ttf")) {
@@ -17,32 +19,39 @@ Game::Game(YourPlayer& player, EnemyPlayer& enemy, CardDeck& deck, int CardsInDe
     text.setFont(font);
 }
 
-void Game::Play(sf::RenderWindow& window, sf::RectangleShape& background) {
-    do {
-        Round(window, background);
-        RoundResult(CheckWinner(), window, background);
+void Game::Play() {
+
+    while (player.GetLife() > 0 && enemy.GetLife() > 0 && window.isOpen()) {
+        processEvents();
+        update();
+        render();
+    }
+
+    /*do {
+        Round();
+        RoundResult(CheckWinner());
         if (player.GetLife() > 0 && enemy.GetLife() > 0) {
             RestartRound();
         }
-    } while (player.GetLife() > 0 && enemy.GetLife() > 0);
+    } while (player.GetLife() > 0 && enemy.GetLife() > 0);*/
    
     if (player.GetLife() <= 0) {
         SetText("You lose in game", menuTextColor, tricknessSize, 45, 0);
-        show(window, background);
+        show();
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
     else if (enemy.GetLife() <= 0) {
         SetText("You win in game", menuTextColor, tricknessSize, 45, 0);
-        show(window, background);
+        show();
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 }
 
-void Game::Round(sf::RenderWindow& window, sf::RectangleShape& background) {
+void Game::Round() {
     SetText("New round", menuTextColor, tricknessSize, 45, 0);
 
-    // Просто вызов New round и ожидание 2 секунды
+    // Вызов New round и ожидание 2 секунды
     window.clear();
     window.draw(background);
     window.draw(text);
@@ -50,37 +59,49 @@ void Game::Round(sf::RenderWindow& window, sf::RectangleShape& background) {
     std::this_thread::sleep_for(std::chrono::seconds(2));
     
     WHOMOVE = random(0, 1);
-    do {
-        std::cout << "Enemy card sum: " << enemy.GetCardSum() << "/" << winningNumber << "\n";
-        std::cout << "Your card sum: " << player.GetCardSum() << "/" << winningNumber << "\n";
-        std::cout << "CounterPass: " << CounterPass << "\n\n\n";
 
-        if (WHOMOVE) {
-            SetText("Your move", menuTextColor, tricknessSize, 45, 0);
-            show(window, background);
-            try {
-                player.Move(deck, WHOMOVE, CounterPass, CardsInDeck, winningNumber, window);
+    sf::Event event;
+
+    while (CounterPass < 2) {
+        while (window.pollEvent(event)) {
+            if (WHOMOVE) {
+                SetText("Your move", menuTextColor, tricknessSize, 45, 0);
+                render();
+
+                try {
+                    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2)) {
+                        player.Move(deck, WHOMOVE, CounterPass, CardsInDeck, winningNumber);
+                    }
+
+                    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3)) {
+                        player.Pass(WHOMOVE, CounterPass);
+                    }
+
+                    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+                        window.close();
+                        std::exit(0);
+                    }
+                }
+                catch (const char* error_message) {   // Вывод ошибки, что перебор + ожидание 2 секунды, чтобы прочесть
+                    SetText(error_message, menuTextColor, tricknessSize, 45, 0);
+                    render();
+                    std::this_thread::sleep_for(std::chrono::seconds(2));
+                }
             }
-            catch (const char* error_message) {   // Вывод ошибки, что перебор + ожидание 2 секунды, чтобы прочесть
-                SetText(error_message, menuTextColor, tricknessSize, 45, 0);
-                show(window, background);
-                std::this_thread::sleep_for(std::chrono::seconds(2));
+
+            else {
+                SetText("Enemy move", menuTextColor, tricknessSize, 45, 0);
+                render();
+
+                enemy.Move(deck, WHOMOVE, CounterPass, CardsInDeck, winningNumber);
             }
+            /*SetText("", menuTextColor, tricknessSize, 45, 0);
+            render();*/
         }
-        else {
-            SetText("Enemy move", menuTextColor, tricknessSize, 45, 0);
-            show(window, background);
-
-            enemy.Move(deck, WHOMOVE, CounterPass, CardsInDeck, winningNumber, window);
-        }
-
-        SetText("", menuTextColor, tricknessSize, 45, 0);
-        show(window, background);
-
-    } while (CounterPass < 2);
+    }
 }
 
-void Game::show(sf::RenderWindow& window, sf::RectangleShape& background) {
+void Game::show() {
     window.clear();
     window.draw(background);
 
@@ -104,7 +125,48 @@ void Game::show(sf::RenderWindow& window, sf::RectangleShape& background) {
     window.display();
 }
 
-int Game::AfterThePlay(sf::RenderWindow& window, sf::RectangleShape& background) {
+void Game::processEvents() {
+    sf::Event event;
+    while (window.pollEvent(event)) {
+        if (event.type == sf::Event::Closed) {
+            window.close();
+        }
+    }
+}
+
+void Game::update() {
+    Round();
+    RoundResult(CheckWinner());
+    if (player.GetLife() > 0 && enemy.GetLife() > 0) {
+        RestartRound();
+    }
+}
+
+void Game::render() {
+    window.clear();
+    window.draw(background);
+
+    player.showCards(window);
+    player.showLifes(window);
+
+    enemy.showCards(window);
+    enemy.showLifes(window);
+
+    window.draw(text);
+
+    SetText("? + " + std::to_string(enemy.GetCardSum() - enemy.GetFirstCardNumber()) + " / " + std::to_string(winningNumber), sf::Color::White, 3, 30, 1);
+    window.draw(text);
+
+    SetText(std::to_string(player.GetCardSum()) + " / " + std::to_string(winningNumber), sf::Color::White, 3, 30, 2);
+    window.draw(text);
+
+    SetText(std::to_string(player.GetFirstCardNumber()), sf::Color::White, 3, 30, 3);
+    window.draw(text);
+
+    window.display();
+}
+
+int Game::AfterThePlay() {
     SetText("Do you want to play again? Y/N", menuTextColor, tricknessSize, 70, 0);
     bool result = false;
     while (!result) {
@@ -164,7 +226,7 @@ int Game::CheckWinner() {
     }
 }
 
-void Game::RoundResult(int result, sf::RenderWindow& window, sf::RectangleShape& background) {
+void Game::RoundResult(int result) {
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
@@ -173,7 +235,7 @@ void Game::RoundResult(int result, sf::RenderWindow& window, sf::RectangleShape&
 
     if (result == 1) {
         SetText("Draw", menuTextColor, tricknessSize, 45, 0);
-        show(window, background);
+        show();
 
         player.ChangeLifeTexture(1);
         enemy.ChangeLifeTexture(1);
@@ -183,12 +245,12 @@ void Game::RoundResult(int result, sf::RenderWindow& window, sf::RectangleShape&
 
         std::this_thread::sleep_for(std::chrono::seconds(1));
         SetText("Draw", menuTextColor, tricknessSize, 45, 0);
-        show(window, background);
+        show();
     }
 
     else if (result == 2) {
         SetText("You win", menuTextColor, tricknessSize, 45, 0);
-        show(window, background);
+        show();
 
         enemy.ChangeLifeTexture(1);
 
@@ -196,12 +258,12 @@ void Game::RoundResult(int result, sf::RenderWindow& window, sf::RectangleShape&
 
         std::this_thread::sleep_for(std::chrono::seconds(1));
         SetText("You win", menuTextColor, tricknessSize, 45, 0);
-        show(window, background);
+        show();
     }
 
     else {
         SetText("You lose", menuTextColor, tricknessSize, 45, 0);
-        show(window, background);
+        show();
 
         player.ChangeLifeTexture(1);
 
@@ -209,7 +271,7 @@ void Game::RoundResult(int result, sf::RenderWindow& window, sf::RectangleShape&
 
         std::this_thread::sleep_for(std::chrono::seconds(1));
         SetText("You lose", menuTextColor, tricknessSize, 45, 0);
-        show(window, background);
+        show();
     }
     std::this_thread::sleep_for(std::chrono::seconds(1));
 }
