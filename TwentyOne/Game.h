@@ -18,11 +18,15 @@ private:
     int winningNumber;
 
     sf::Font font;
-    sf::Text text;
-    int textPosX, textPosY;
+    sf::Text yourCloseCard, yourCardSum, enemyCardSum, text;
+    //int textPosX, textPosY;
+
+    int yourMove = -1;
 
     std::string replicas[9] = { "New round", "Your move", "Enemy move", "Draw", "You win", "You lose", "You lose in game" , 
         "You win in game", "Do you want to play again? Y/N" };
+
+    std::vector<sf::Text> textReplicas;
 
     void Round();
 
@@ -32,13 +36,11 @@ private:
 
     void RestartRound();
 
-    void SetText(std::string newText, sf::Color newColor, int thickness, int size, int trigger);
-
-    void show();
+    void SetText(sf::Text& text, std::string newText, sf::Color newColor, int thickness, int size, int trigger);
 
     void processEvents();
     void update();
-    void render();
+    void render(int trigger);
 public:
     Game(CardDeck& deck, int CardsInDeck, sf::RenderWindow& window_, sf::RectangleShape background_);
 
