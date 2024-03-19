@@ -23,8 +23,8 @@ private:
 
     int yourMove = -1;
 
-    std::string replicas[9] = { "New round", "Your move", "Enemy move", "Draw", "You win", "You lose", "You lose in game" , 
-        "You win in game", "Do you want to play again? Y/N" };
+    std::string replicas[10] = { "New round", "Your move", "Enemy move", "Draw", "You win", "You lose", "You lose in game" , 
+        "You win in game", "Do you want to play again? Y/N", ""};
 
     std::vector<sf::Text> textReplicas;
 
@@ -36,11 +36,11 @@ private:
 
     void RestartRound();
 
-    void SetText(sf::Text& text, std::string newText, sf::Color newColor, int thickness, int size, int trigger);
+    void addText();
 
     void processEvents();
     void update();
-    void render(int trigger);
+    void render(int trigger, sf::Text textToRender);
 public:
     Game(CardDeck& deck, int CardsInDeck, sf::RenderWindow& window_, sf::RectangleShape background_);
 
