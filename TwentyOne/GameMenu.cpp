@@ -67,7 +67,6 @@ void GameMenu::render() {
 		for (auto i : mainMenu) {
 			window.draw(i);
 		}
-
 		window.display();
 	}
 }
@@ -147,8 +146,8 @@ void GameMenu::OpenRules() {
 }
 
 GameMenu::GameMenu(std::vector<std::string>& nameMenu)
-	: /*window(sf::VideoMode::getDesktopMode(), "Twenty One", sf::Style::Fullscreen),*/
-	window(sf::VideoMode(1800, 1000), "Twenty One"),
+	: window(sf::VideoMode::getDesktopMode(), "Twenty One", sf::Style::Fullscreen),
+	/*window(sf::VideoMode(1800, 1000), "Twenty One"),*/
 	background(sf::Vector2f(WIDTH, HEIGHT)), menuX(WIDTH * 0.49), menuY(HEIGHT * 0.37), menuStep(175), sizeFont(65)
 {
 	this->nameMenu = nameMenu;
