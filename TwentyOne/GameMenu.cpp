@@ -165,6 +165,8 @@ GameMenu::GameMenu(std::vector<std::string>& nameMenu)
 }
 
 void GameMenu::GamePlayMenu() {
+	resultMenu = false;
+
 	while (!resultMenu && window.isOpen()) {
 		processEvents();
 		update();

@@ -41,15 +41,15 @@ void Game::Play() {
         render(0);
         std::this_thread::sleep_for(std::chrono::seconds(2));
 
+        // Сама игра
         Round();
         RoundResult(CheckWinner());
         if (player.GetLife() > 0 && enemy.GetLife() > 0) {
             RestartRound();
         }
     } while (player.GetLife() > 0 && enemy.GetLife() > 0);
-   // Почему-то при окончании игры, условие в while продолжает выполняться
 
-    /*if (player.GetLife() <= 0 && enemy.GetLife() > 0) {
+    if (player.GetLife() <= 0 && enemy.GetLife() > 0) {
         SetText(text, replicas[6], menuTextColor, thicknessSize, 45, 0);
         render(1);
         std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -66,7 +66,7 @@ void Game::Play() {
         SetText(text, replicas[3], menuTextColor, thicknessSize, 45, 0);
         render(1);
         std::this_thread::sleep_for(std::chrono::seconds(1));
-    }*/
+    }
 }
 
 void Game::Round() {

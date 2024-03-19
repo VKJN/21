@@ -11,7 +11,7 @@ private:
 	sf::Text titul;
 
 	std::vector<sf::Text> mainMenu;
-	int textPosX = 250, textPosY = 500;
+	int textPosX = 200, textPosY = 500;
 	std::vector<std::string> nameMenu;
 
 	std::vector<sf::Text> textFromFile;
@@ -23,7 +23,7 @@ private:
 	int menuStep;
 	int sizeFont;
 	int mainMenuSelected;
-	bool resultMenu = false;
+	bool resultMenu;
 
 	bool rulesOpened = false;
 	std::string rulesPath = "Rules.txt";
