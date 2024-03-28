@@ -132,6 +132,8 @@
     <ClCompile Include="EnemyPlayer.cpp" />
     <ClCompile Include="GameMenu.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="TrumpCard.cpp" />
+    <ClCompile Include="TrumpCardDeck.cpp" />
     <ClCompile Include="TwentyOne.cpp" />
     <ClCompile Include="YourPlayer.cpp" />
   </ItemGroup>
@@ -147,6 +149,8 @@
     <ClInclude Include="GameMenu.h" />
     <ClInclude Include="Header.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="TrumpCard.h" />
+    <ClInclude Include="TrumpCardDeck.h" />
     <ClInclude Include="YourPlayer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -7,6 +7,7 @@ private:
     sf::Texture textureCard;
     sf::Sprite spriteCard;
 public:
+    Card() {};
     Card(int value, sf::Texture& texture_card);
 
     Card(const Card& copy);

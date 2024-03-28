@@ -11,10 +11,16 @@ private:
 	sf::Text titul;
 
 	std::vector<sf::Text> mainMenu;
-	int textPosX = 200, textPosY = 500;
+	int textPosX = 150, textPosY = 300;
 	std::vector<std::string> nameMenu;
 
 	std::vector<sf::Text> textFromFile;
+
+	std::vector<sf::Sprite> CardsForDescription;
+	std::vector<sf::Texture*> texturesForCards;
+	std::vector<sf::Text> textForCards;
+	bool description = false;
+	std::string descriptionPath = "Description of trump cards.txt";
 
 	sf::Color menuColor;
 
@@ -38,7 +44,11 @@ private:
 	void AlignMenu();
 
 	void handleMouseClick(const sf::Vector2i& mousePosition);
+
 	void OpenRules();
+
+	void addCardsForDescription();
+	void OpenDescription();
 public:
 	GameMenu(std::vector<std::string>& nameMenu);
 	void GamePlayMenu();

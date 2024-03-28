@@ -27,6 +27,10 @@ void YourPlayer::TakeCard(const Card& NewCard) {
     }
 }
 
+void YourPlayer::TakeTrump(const TrumpCard& NewTrump) {
+    TrumpInventory.push_back(NewTrump);
+}
+
 
 // Метод для смены активного игрока и повышения счетчика пассов
 void YourPlayer::Pass(bool& WHOMOVE, int& CounterPass) {
@@ -44,7 +48,7 @@ void YourPlayer::Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& Card
     }
 
     else {
-        throw "You cannot take the card while you have too much";
+        throw "You can't take the card while you have too much";
     }
 }
 
@@ -56,11 +60,31 @@ void YourPlayer::showCards(sf::RenderWindow& window) {
         cardPosX += 170;
     }
     cardPosX = WIDTH * 0.34;
+
+    for (auto i : TrumpsShown) {
+        i.setTextureCardPosition(cardPosX, cardPosY - 130);
+        i.Show(window);
+        cardPosX += 140;
+    }
+    cardPosX = WIDTH * 0.34;
 }
 
 void YourPlayer::showLifes(sf::RenderWindow& window) {
     for (auto i : Array_of_Lifes) {
         window.draw(i);
+    }
+}
+
+void YourPlayer::showTrumpInventory(sf::RenderWindow& window) {
+    int x = 980, y = 50;
+    for (int i = 0; i < TrumpInventory.size(); i++) {
+        if (i % 5 == 0 && i != 0) {
+            y += 170;
+            x = 980;
+        }
+        TrumpInventory[i].setTextureCardPosition(x, y);
+        TrumpInventory[i].Show(window);
+        x += 170;
     }
 }
 
@@ -72,8 +96,8 @@ int YourPlayer::GetLife() {
     return Life;
 }
 
-int YourPlayer::GetBid() {
-    return Bid;
+int YourPlayer::GetBet() {
+    return Bet;
 }
 
 void YourPlayer::SetLife(int newLife) {
@@ -84,19 +108,28 @@ void YourPlayer::SetCardSum(int newCardSum) {
     this->CardSum = newCardSum;
 }
 
+void YourPlayer::SetBet(int newBet) {
+    this->Bet = newBet;
+}
+
 void YourPlayer::ClearArray() {
     Array_of_cards.clear();
+    TrumpsShown.clear();
+}
+
+void YourPlayer::ClearInventory() {
+    TrumpInventory.clear();
 }
 
 void YourPlayer::ChangeFirstCardTexture() {
     sf::Texture newTexture;
 
-    if (pathFirstCardTexture == "image/back of the card.jpg") {
-        pathFirstCardTexture = "image/" + std::to_string(Array_of_cards[0].GetNumber()) + ".jpg";
+    if (pathFirstCardTexture == "image/Textures for cards/back of the card.jpg") {
+        pathFirstCardTexture = "image/Textures for cards/" + std::to_string(Array_of_cards[0].GetNumber()) + ".jpg";
         if (!newTexture.loadFromFile(pathFirstCardTexture)) {}
     }
     else {
-        pathFirstCardTexture = "image/back of the card.jpg";
+        pathFirstCardTexture = "image/Textures for cards/back of the card.jpg";
         if (!newTexture.loadFromFile(pathFirstCardTexture)) {}
     }
     Array_of_cards[0].changeTexture(newTexture);
@@ -105,8 +138,10 @@ void YourPlayer::ChangeFirstCardTexture() {
 
 // Смена текстуры жизни на пустую и наоборот
 void YourPlayer::ChangeLifeTexture(int index) {
-    if (index == 1) {
-        Array_of_Lifes[5 - Life].setTexture(newLifeTexture);
+    if (index == 1) { 
+        for (int i = 5; i > Life; i--) {
+            Array_of_Lifes[5 - i].setTexture(newLifeTexture);
+        }
     }
     else {
         Array_of_Lifes.clear();
@@ -126,6 +161,43 @@ void YourPlayer::lifeSpriteSetup() {
     }
 }
 
+bool YourPlayer::handleMouseClick(const sf::Vector2i& mousePosition) {
+    bool result = false;
+    int index = 0;
+
+    for (int i = 0; i < TrumpInventory.size(); i++) {
+        if (TrumpInventory[i].getPosition().contains(float(mousePosition.x), float(mousePosition.y))) {
+            TrumpsShown.push_back(TrumpInventory[i]);
+            TrumpInventory.erase(TrumpInventory.begin() + i);
+            result = true;
+        }
+    }
+
+    for (int i = 0; i < TrumpInventory.size(); i++) {
+        TrumpInventory[i].setTexture(); // Заново ставить текстуры, так как иначе ужас будет
+    }
+
+    return result;
+}
+
+std::vector<TrumpCard>& YourPlayer::getTrumpsShown() {
+    return TrumpsShown;
+}
+
+Card YourPlayer::removeLastCard() {
+    Card last = Array_of_cards.back();
+    Array_of_cards.pop_back();
+    return last;
+}
+
+std::vector<Card> YourPlayer::getArrayOfCard() {
+    return Array_of_cards;
+}
+
 int YourPlayer::GetFirstCardNumber() {
     return Array_of_cards[0].GetNumber();
+}
+
+int YourPlayer::GetLastCardNumber() {
+    return Array_of_cards.back().GetNumber();
 }

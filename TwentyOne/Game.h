@@ -2,6 +2,7 @@
 #include "YourPlayer.h"
 #include "EnemyPlayer.h"
 #include "CardDeck.h"
+#include "TrumpCardDeck.h"
 
 class Game {
 private:
@@ -11,15 +12,19 @@ private:
     YourPlayer player;
     EnemyPlayer enemy;
     CardDeck deck;
+    TrumpCardDeck trumpDeck;
 
     bool WHOMOVE; // true - твой ход, false - ход противника
     int CounterPass; // Если 2 - закрытые карты открываются
     int CardsInDeck;
+    int CardsInTrumpDeck = 31;
     int winningNumber;
 
     sf::Font font;
-    sf::Text yourCloseCard, yourCardSum, enemyCardSum, text;
-    //int textPosX, textPosY;
+    sf::Text yourCloseCard, yourCardSum, enemyCardSum, text, yourBet, enemyBet;
+
+    bool visible = false; // Показ козырей
+    sf::RectangleShape windowTrump;
 
     int yourMove = -1;
 
@@ -38,11 +43,14 @@ private:
 
     void addText();
 
+    void whatTrumpCard(std::vector<TrumpCard>& trumps, Player& who);
+
     void processEvents();
     void update();
     void render(int trigger, sf::Text textToRender);
+
 public:
-    Game(CardDeck& deck, int CardsInDeck, sf::RenderWindow& window_, sf::RectangleShape background_);
+    Game(CardDeck& deck, int CardsInDeck, sf::RenderWindow & window_, sf::RectangleShape background_);
 
     void Play();
 

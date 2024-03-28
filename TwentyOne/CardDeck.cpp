@@ -24,15 +24,25 @@ void CardDeck::ClearDeck() {
     deck.clear();
 }
 
+int CardDeck::cardSearch(int cardNumber) {
+    for (int i = 0; i < deck.size(); i++) {
+        if (deck[i].GetNumber() == cardNumber) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 // Просто функция по заполнению колоды
 void AddInDeck(CardDeck& deck, int& CardsInDeck) {
     sf::Texture texture_card;
     for (int i = 1; i < CardsInDeck + 1; i++) {
-        std::string cardTexturePath = "image/" + std::to_string(i) + ".jpg";
+        std::string cardTexturePath = "image/Textures for cards/" + std::to_string(i) + ".jpg";
 
         if (!texture_card.loadFromFile(cardTexturePath)) {
             std::cout << "Failed to load texture for card " << i << std::endl;
         }
+
         texture_card.setSmooth(true);
         deck.AddCard(Card(i, texture_card));
     }

@@ -1,0 +1,7 @@
+- take a card with the corresponding number from the deck. If not, nothing happens (possible numbers: 2-7)
+- Your bet is reduced by 1
+- The opponent's last up card goes back into the deck
+- Your last card revealed goes back into the deck
+- exchange of last opened cards
+- the winning number becomes the same as the trump number (17, 24 or 27)
+- The opponent's bet increases by the number of triangles (+1 or +2)

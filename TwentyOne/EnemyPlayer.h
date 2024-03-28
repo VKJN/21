@@ -1,12 +1,16 @@
 #pragma once
 #include "Player.h"
+#include "YourPlayer.h"
 
 class EnemyPlayer : public Player {
 private:
-    std::vector<Card> Array_of_cards;           //Векторы карт и жизней (спрайтов жизней)
+    std::vector<Card> Array_of_cards;           //Векторы карт и жизней
+    std::vector<TrumpCard> TrumpInventory; // Козыри, которые не отображаются
+    std::vector<TrumpCard> TrumpsShown;     // Те козыри, которые противник использовал в раунде (отображаются при использовании)
     std::vector<sf::Sprite> Array_of_Lifes;
+
     int CardSum = 0; // Сумма карт
-    int Bid = 1; // Ставка (сколько будет отниматься жизней за проигрыш)
+    int Bet = 1; // Ставка (сколько будет отниматься жизней за проигрыш)
     int Life = 5; // Кол-во жизней
 
     sf::Texture newLifeTexture;   //Текстуры для жизней (красное сердце и пустое)
@@ -18,35 +22,38 @@ private:
     int cardPosX = WIDTH * 0.42, cardPosY = HEIGHT * 0.28; // Позиция 1 карты
 
     void Pass(bool& WHOMOVE, int& CounterPass);
+
 public:
     EnemyPlayer();
     EnemyPlayer(const Card& FirstCard, const Card& SecondCard);
 
     void TakeCard(const Card& NewCard);
+    void TakeTrump(const TrumpCard& NewTrump);
 
-    void Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& MaxCards, int& winningNumber);
+    int Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& MaxCards, int& winningNumber, YourPlayer& player);
 
     void showCards(sf::RenderWindow& window);
-
     void showLifes(sf::RenderWindow& window);
 
     int GetCardSum();
-
     int GetLife();
-
-    int GetBid();
+    int GetBet();
 
     void SetLife(int newLife);
-
     void SetCardSum(int newCardSum);
+    void SetBet(int newBet);
 
     void ClearArray();
+    void ClearInventory();
 
     void ChangeFirstCardTexture();
-
     void ChangeLifeTexture(int index);
 
     int GetFirstCardNumber();
 
     void lifeSpriteSetup();
+
+    Card removeLastCard();
+
+    std::vector<TrumpCard>& getTrumpsShown();
 };

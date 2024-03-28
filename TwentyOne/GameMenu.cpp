@@ -27,6 +27,14 @@ void GameMenu::processEvents() {
 
 			updateMenuText();
 		}
+
+		else if (description && event.type == sf::Event::KeyPressed) {
+			description = false;
+			textForCards.clear();
+			CardsForDescription.clear();
+
+			updateMenuText();
+		}
 	}
 }
 
@@ -42,7 +50,7 @@ void GameMenu::update() {
 		}
 	}
 
-	if (rulesOpened) {
+	if (rulesOpened || description) {
 		mainMenu.clear();
 	}
 }
@@ -53,6 +61,21 @@ void GameMenu::render() {
 		window.draw(background);
 
 		for (auto i : textFromFile) {
+			window.draw(i);
+		}
+
+		window.display();
+	}
+
+	else if (description) {
+		window.clear();
+		window.draw(background);
+
+		for (auto i : CardsForDescription) {
+			window.draw(i);
+		}
+
+		for (auto i : textForCards) {
 			window.draw(i);
 		}
 
@@ -116,10 +139,16 @@ void GameMenu::handleMouseClick(const sf::Vector2i& mousePosition) {
 			case 0:
 				resultMenu = true;
 				break;
+
 			case 1:
 				OpenRules();
 				break;
+
 			case 2:
+				OpenDescription();
+				break;
+
+			case 3:
 				std::exit(0);
 				window.close();
 				break;
@@ -148,7 +177,7 @@ void GameMenu::OpenRules() {
 GameMenu::GameMenu(std::vector<std::string>& nameMenu)
 	: window(sf::VideoMode::getDesktopMode(), "Twenty One", sf::Style::Fullscreen),
 	/*window(sf::VideoMode(1800, 1000), "Twenty One"),*/
-	background(sf::Vector2f(WIDTH, HEIGHT)), menuX(WIDTH * 0.49), menuY(HEIGHT * 0.37), menuStep(175), sizeFont(65)
+	background(sf::Vector2f(WIDTH, HEIGHT)), menuX(WIDTH * 0.5), menuY(HEIGHT * 0.32), menuStep(175), sizeFont(65)
 {
 	this->nameMenu = nameMenu;
 	backgroundTexture.loadFromFile("./image/background.jpg");
@@ -158,7 +187,7 @@ GameMenu::GameMenu(std::vector<std::string>& nameMenu)
 
 	titul.setFont(menuFont);
 	std::string titulText = "Twenty One";
-	initText(titul, WIDTH * 0.31, 50, titulText, 125, menuTextColor);
+	initText(titul, WIDTH * 0.32, 50, titulText, 125, menuTextColor);
 
 	updateMenuText();
 }
@@ -171,6 +200,45 @@ void GameMenu::GamePlayMenu() {
 		update();
 		render();
 	}
+}
+
+void GameMenu::addCardsForDescription() {
+	std::string name[7] = { "take2", "shield", "remove", "return", "exchange", "go for 17", "+1"};
+
+	for (int i = 0; i < 7; i++) {
+		sf::Sprite card;
+		std::string path = "image/Textures for trump cards/" + name[i] + ".jpg";
+		sf::Texture* texture = new sf::Texture;
+
+		texture->loadFromFile(path);
+		texturesForCards.push_back(texture);
+
+		card.setTexture(*texturesForCards[i]);
+		CardsForDescription.push_back(card);
+	}
+}
+
+void GameMenu::OpenDescription() {
+	addCardsForDescription();
+
+	std::ifstream descriptionFile(descriptionPath);
+	std::string lineText;
+	sf::Text text;
+
+	int countSprite = 0, xS = 60, yS = 50, xT = 190, yT = 90;
+	if (descriptionFile.is_open()) {
+		while (std::getline(descriptionFile, lineText)) {
+			CardsForDescription[countSprite++].setPosition(sf::Vector2f(xS, yS));
+
+			initText(text, xT, yT, lineText, 31, sf::Color::White);
+			textForCards.push_back(text);
+
+			yS += 140, yT += 140;
+		}
+	}
+	descriptionFile.close();
+
+	description = true;
 }
 
 sf::RenderWindow& GameMenu::getWindow() {

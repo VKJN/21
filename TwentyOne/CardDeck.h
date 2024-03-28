@@ -1,7 +1,7 @@
 #pragma once
 #include "Card.h"
 
-class CardDeck {
+class CardDeck  {
 private:
     std::vector<Card> deck;
 public:
@@ -12,6 +12,8 @@ public:
     int GetCardCounter();
 
     void ClearDeck();
+
+    int cardSearch(int cardNumber);
 };
 
 void AddInDeck(CardDeck& deck, int& CardsInDeck);

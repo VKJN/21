@@ -7,3 +7,6 @@ Conditions of victory:
 2) Scored over 21 points - lost.
 3) If both players are outmatched, the player with the least amount wins.
 4) If the players have reached the same amount, both have lost.
+
+There are also trump cards, special cards to help yourself or hinder your opponent. 
+They drop out to you with a 50% chance after drawing a card.
