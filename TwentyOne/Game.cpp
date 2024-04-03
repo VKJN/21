@@ -125,7 +125,7 @@ void Game::update() {
 
                 int chance = random(1, 10);
 
-                if (chance < 11 && trumpDeck.GetCardCounter() != 0) {
+                if (chance < 6 && trumpDeck.GetCardCounter() != 0) {
                     player.TakeTrump(trumpDeck.RemoveCard(random(1, trumpDeck.GetCardCounter()), CardsInTrumpDeck));
                 }
             }
