@@ -17,7 +17,7 @@ YourPlayer::YourPlayer(const Card& FirstCard, const Card& SecondCard) {
     lifeSpriteSetup();
 }
 
-// Метод для добавления в руки карты, пока сумма номеров карт не выше выйгрышного числа
+// ГЊГҐГІГ®Г¤ Г¤Г«Гї Г¤Г®ГЎГ ГўГ«ГҐГ­ГЁГї Гў Г°ГіГЄГЁ ГЄГ Г°ГІГ», ГЇГ®ГЄГ  Г±ГіГ¬Г¬Г  Г­Г®Г¬ГҐГ°Г®Гў ГЄГ Г°ГІ Г­ГҐ ГўГ»ГёГҐ ГўГ»Г©ГЈГ°Г»ГёГ­Г®ГЈГ® Г·ГЁГ±Г«Г 
 void YourPlayer::TakeCard(const Card& NewCard) {
     Array_of_cards.push_back(NewCard);
     CardSum += NewCard.GetNumber();
@@ -32,14 +32,14 @@ void YourPlayer::TakeTrump(const TrumpCard& NewTrump) {
 }
 
 
-// Метод для смены активного игрока и повышения счетчика пассов
+// ГЊГҐГІГ®Г¤ Г¤Г«Гї Г±Г¬ГҐГ­Г» Г ГЄГІГЁГўГ­Г®ГЈГ® ГЁГЈГ°Г®ГЄГ  ГЁ ГЇГ®ГўГ»ГёГҐГ­ГЁГї Г±Г·ГҐГІГ·ГЁГЄГ  ГЇГ Г±Г±Г®Гў
 void YourPlayer::Pass(bool& WHOMOVE, int& CounterPass) {
     WHOMOVE = !WHOMOVE;
     CounterPass++;
 }
 
 
-// Ход игрока, так как в нем вызываются Pass и TakeCard, нужно передать для них соответствующие параметры
+// Г•Г®Г¤ ГЁГЈГ°Г®ГЄГ , ГІГ ГЄ ГЄГ ГЄ Гў Г­ГҐГ¬ ГўГ»Г§Г»ГўГ ГѕГІГ±Гї Pass ГЁ TakeCard, Г­ГіГ¦Г­Г® ГЇГҐГ°ГҐГ¤Г ГІГј Г¤Г«Гї Г­ГЁГµ Г±Г®Г®ГІГўГҐГІГ±ГІГўГіГѕГ№ГЁГҐ ГЇГ Г°Г Г¬ГҐГІГ°Г»
 void YourPlayer::Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& CardsInDeck, int& winningNumber) {
     if (CardSum <= winningNumber) {
         TakeCard(Deck.RemoveCard(random(1, Deck.GetCardCounter()), CardsInDeck));
@@ -101,6 +101,7 @@ int YourPlayer::GetBet() {
 }
 
 void YourPlayer::SetLife(int newLife) {
+    if (newLife >= 0) this->Life = 0;
     this->Life = newLife;
 }
 
@@ -136,7 +137,7 @@ void YourPlayer::ChangeFirstCardTexture() {
 }
 
 
-// Смена текстуры жизни на пустую и наоборот
+// Г‘Г¬ГҐГ­Г  ГІГҐГЄГ±ГІГіГ°Г» Г¦ГЁГ§Г­ГЁ Г­Г  ГЇГіГ±ГІГіГѕ ГЁ Г­Г Г®ГЎГ®Г°Г®ГІ
 void YourPlayer::ChangeLifeTexture(int index) {
     if (index == 1) { 
         for (int i = 5; i > Life; i--) {
@@ -150,12 +151,12 @@ void YourPlayer::ChangeLifeTexture(int index) {
 }
 
 
-// Метод для установки текстуры и спрайта жизней и добавление спрайта в вектор
+// ГЊГҐГІГ®Г¤ Г¤Г«Гї ГіГ±ГІГ Г­Г®ГўГЄГЁ ГІГҐГЄГ±ГІГіГ°Г» ГЁ Г±ГЇГ°Г Г©ГІГ  Г¦ГЁГ§Г­ГҐГ© ГЁ Г¤Г®ГЎГ ГўГ«ГҐГ­ГЁГҐ Г±ГЇГ°Г Г©ГІГ  Гў ГўГҐГЄГІГ®Г°
 void YourPlayer::lifeSpriteSetup() {
     sf::Sprite spriteLife;
     spriteLife.setTexture(textureLife);
 
-    for (int i = 0, posX = 100, posY = HEIGHT * 0.6; i < 5; i++, posY += 60) {  //650 = 60% от 1080
+    for (int i = 0, posX = 100, posY = HEIGHT * 0.6; i < 5; i++, posY += 60) {  //650 = 60% Г®ГІ 1080
         spriteLife.setPosition(posX, posY);
         Array_of_Lifes.push_back(spriteLife);
     }
@@ -174,7 +175,7 @@ bool YourPlayer::handleMouseClick(const sf::Vector2i& mousePosition) {
     }
 
     for (int i = 0; i < TrumpInventory.size(); i++) {
-        TrumpInventory[i].setTexture(); // Заново ставить текстуры, так как иначе ужас будет
+        TrumpInventory[i].setTexture(); // Г‡Г Г­Г®ГўГ® Г±ГІГ ГўГЁГІГј ГІГҐГЄГ±ГІГіГ°Г», ГІГ ГЄ ГЄГ ГЄ ГЁГ­Г Г·ГҐ ГіГ¦Г Г± ГЎГіГ¤ГҐГІ
     }
 
     return result;
