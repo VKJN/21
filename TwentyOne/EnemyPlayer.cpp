@@ -31,17 +31,17 @@ void EnemyPlayer::TakeTrump(const TrumpCard& NewTrump) {
     TrumpInventory.push_back(NewTrump);
 }
 
-// Метод для смены активного игрока и повышения счетчика пассов (при пассе)
+// ГЊГҐГІГ®Г¤ Г¤Г«Гї Г±Г¬ГҐГ­Г» Г ГЄГІГЁГўГ­Г®ГЈГ® ГЁГЈГ°Г®ГЄГ  ГЁ ГЇГ®ГўГ»ГёГҐГ­ГЁГї Г±Г·ГҐГІГ·ГЁГЄГ  ГЇГ Г±Г±Г®Гў (ГЇГ°ГЁ ГЇГ Г±Г±ГҐ)
 void EnemyPlayer::Pass(bool& WHOMOVE, int& CounterPass) {
     WHOMOVE = !WHOMOVE;
     CounterPass++;
 }
 
 
-// Ход противника, так как в нем вызываются Pass и TakeCard, нужно передать для них соответствующие параметры
+// Г•Г®Г¤ ГЇГ°Г®ГІГЁГўГ­ГЁГЄГ , ГІГ ГЄ ГЄГ ГЄ Гў Г­ГҐГ¬ ГўГ»Г§Г»ГўГ ГѕГІГ±Гї Pass ГЁ TakeCard, Г­ГіГ¦Г­Г® ГЇГҐГ°ГҐГ¤Г ГІГј Г¤Г«Гї Г­ГЁГµ Г±Г®Г®ГІГўГҐГІГ±ГІГўГіГѕГ№ГЁГҐ ГЇГ Г°Г Г¬ГҐГІГ°Г»
 int EnemyPlayer::Move(CardDeck& Deck, bool& WHOMOVE, int& CounterPass, int& CardsInDeck, int& winningNumber, YourPlayer& player) {
     /*
-    * I know that this is complete horror, and not code, but I don’t know how to do it differently.
+    * I know that this is complete horror, and not code, but I donвЂ™t know how to do it differently.
     * Had to add method and field to YourPlayer just for this method. And this switch case looks terrible
     */
 
@@ -326,7 +326,7 @@ void EnemyPlayer::showCards(sf::RenderWindow& window) {
     }
     cardPosX = WIDTH * 0.42;
 
-    // Прототип
+    // ГЏГ°Г®ГІГ®ГІГЁГЇ
     for (auto i : TrumpsShown) {
         i.setScale(-1, -1);
         i.setTextureCardPosition(cardPosX, cardPosY + 130);
@@ -355,6 +355,7 @@ int EnemyPlayer::GetBet() {
 }
 
 void EnemyPlayer::SetLife(int newLife) {
+    if (newLife >= 0) this->Life = 0;
     this->Life = newLife;
 }
 
@@ -390,7 +391,7 @@ void EnemyPlayer::ChangeFirstCardTexture() {
 }
 
 
-// Смена текстуры жизни на пустую и наоборот
+// Г‘Г¬ГҐГ­Г  ГІГҐГЄГ±ГІГіГ°Г» Г¦ГЁГ§Г­ГЁ Г­Г  ГЇГіГ±ГІГіГѕ ГЁ Г­Г Г®ГЎГ®Г°Г®ГІ
 void EnemyPlayer::ChangeLifeTexture(int index) {
     if (index == 1) {
         for (int i = 5; i > Life; i--) {
@@ -404,7 +405,7 @@ void EnemyPlayer::ChangeLifeTexture(int index) {
 }
 
 
-// Метод для установки текстуры и спрайта жизней и добавление спрайта в вектор
+// ГЊГҐГІГ®Г¤ Г¤Г«Гї ГіГ±ГІГ Г­Г®ГўГЄГЁ ГІГҐГЄГ±ГІГіГ°Г» ГЁ Г±ГЇГ°Г Г©ГІГ  Г¦ГЁГ§Г­ГҐГ© ГЁ Г¤Г®ГЎГ ГўГ«ГҐГ­ГЁГҐ Г±ГЇГ°Г Г©ГІГ  Гў ГўГҐГЄГІГ®Г°
 void EnemyPlayer::lifeSpriteSetup() {
     sf::Sprite spriteLife;
     spriteLife.setTexture(textureLife);
